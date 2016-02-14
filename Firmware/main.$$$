@@ -1,0 +1,2547 @@
+   A    1 :V17
+  A    2 :
+  A    3 :
+#include <16F877.h> A    4 :
+ //////// Standard Header file for the PIC16F877 device ////////////////  B    1 :I1
+#device PIC16F877  *=16 adc=8   B    2 :
+#nolist  B    3N:X0
+//////// Program memory: 8192x14  Data RAM: 367  Stack: 8  B    4N:
+//////// I/O: 33   Analog Pins: 8  B    5N:
+//////// Data EEPROM: 256  B    6N:
+//////// C Scratch area: 77   ID Location: 2000  B    7N:
+//////// Fuses: LP,XT,HS,RC,NOWDT,WDT,NOPUT,PUT,PROTECT,PROTECT_5%  B    8N:
+//////// Fuses: PROTECT_50%,NOPROTECT,NOBROWNOUT,BROWNOUT,LVP,NOLVP,CPD  B    9N:
+//////// Fuses: NOCPD,WRT,NOWRT,DEBUG,NODEBUG  B   10N:
+////////   B   11N:
+////////////////////////////////////////////////////////////////// I/O  B   12N:
+// Discrete I/O Functions: SET_TRIS_x(), OUTPUT_x(), INPUT_x(),  B   13N:
+//                         PORT_B_PULLUPS(), INPUT(),  B   14N:
+//                         OUTPUT_LOW(), OUTPUT_HIGH(),  B   15N:
+//                         OUTPUT_FLOAT(), OUTPUT_BIT()  B   16N:
+// Constants used to identify pins in the above are:  B   17N:
+  B   18N:
+#define PIN_A0  40  B   19N:
+#define PIN_A1  41  B   20N:
+#define PIN_A2  42  B   21N:
+#define PIN_A3  43  B   22N:
+#define PIN_A4  44  B   23N:
+#define PIN_A5  45  B   24N:
+  B   25N:
+#define PIN_B0  48  B   26N:
+#define PIN_B1  49  B   27N:
+#define PIN_B2  50  B   28N:
+#define PIN_B3  51  B   29N:
+#define PIN_B4  52  B   30N:
+#define PIN_B5  53  B   31N:
+#define PIN_B6  54  B   32N:
+#define PIN_B7  55  B   33N:
+  B   34N:
+#define PIN_C0  56  B   35N:
+#define PIN_C1  57  B   36N:
+#define PIN_C2  58  B   37N:
+#define PIN_C3  59  B   38N:
+#define PIN_C4  60  B   39N:
+#define PIN_C5  61  B   40N:
+#define PIN_C6  62  B   41N:
+#define PIN_C7  63  B   42N:
+  B   43N:
+#define PIN_D0  64  B   44N:
+#define PIN_D1  65  B   45N:
+#define PIN_D2  66  B   46N:
+#define PIN_D3  67  B   47N:
+#define PIN_D4  68  B   48N:
+#define PIN_D5  69  B   49N:
+#define PIN_D6  70  B   50N:
+#define PIN_D7  71  B   51N:
+  B   52N:
+#define PIN_E0  72  B   53N:
+#define PIN_E1  73  B   54N:
+#define PIN_E2  74  B   55N:
+  B   56N:
+////////////////////////////////////////////////////////////////// Useful defines  B   57N:
+#define FALSE 0  B   58N:
+#define TRUE 1  B   59N:
+  B   60N:
+#define BYTE int  B   61N:
+#define BOOLEAN short int  B   62N:
+  B   63N:
+#define getc getch  B   64N:
+#define fgetc getch  B   65N:
+#define getchar getch  B   66N:
+#define putc putchar  B   67N:
+#define fputc putchar  B   68N:
+#define fgets gets  B   69N:
+#define fputs puts  B   70N:
+  B   71N:
+////////////////////////////////////////////////////////////////// Control  B   72N:
+// Control Functions:  RESET_CPU(), SLEEP(), RESTART_CAUSE()  B   73N:
+// Constants returned from RESTART_CAUSE() are:  B   74N:
+#define WDT_FROM_SLEEP  0       B   75N:
+#define WDT_TIMEOUT     8       B   76N:
+#define MCLR_FROM_SLEEP 16      B   77N:
+#define NORMAL_POWER_UP 24      B   78N:
+  B   79N:
+  B   80N:
+////////////////////////////////////////////////////////////////// Timer 0  B   81N:
+// Timer 0 (AKA RTCC)Functions: SETUP_COUNTERS() or SETUP_TIMER_0(),  B   82N:
+//                              SET_TIMER0() or SET_RTCC(),  B   83N:
+//                              GET_TIMER0() or GET_RTCC()  B   84N:
+// Constants used for SETUP_TIMER_0() are:  B   85N:
+#define RTCC_INTERNAL   0  B   86N:
+#define RTCC_EXT_L_TO_H 32  B   87N:
+#define RTCC_EXT_H_TO_L 48  B   88N:
+  B   89N:
+#define RTCC_DIV_1      8  B   90N:
+#define RTCC_DIV_2      0  B   91N:
+#define RTCC_DIV_4      1  B   92N:
+#define RTCC_DIV_8      2  B   93N:
+#define RTCC_DIV_16     3  B   94N:
+#define RTCC_DIV_32     4  B   95N:
+#define RTCC_DIV_64     5  B   96N:
+#define RTCC_DIV_128    6  B   97N:
+#define RTCC_DIV_256    7  B   98N:
+  B   99N:
+  B  100N:
+#define RTCC_8_BIT      0       B  101N:
+  B  102N:
+// Constants used for SETUP_COUNTERS() are the above  B  103N:
+// constants for the 1st param and the following for  B  104N:
+// the 2nd param:  B  105N:
+  B  106N:
+////////////////////////////////////////////////////////////////// WDT  B  107N:
+// Watch Dog Timer Functions: SETUP_WDT() or SETUP_COUNTERS() (see above)  B  108N:
+//                            RESTART_WDT()  B  109N:
+//  B  110N:
+#define WDT_18MS        8     B  111N:
+#define WDT_36MS        9     B  112N:
+#define WDT_72MS       10     B  113N:
+#define WDT_144MS      11     B  114N:
+#define WDT_288MS      12     B  115N:
+#define WDT_576MS      13     B  116N:
+#define WDT_1152MS     14     B  117N:
+#define WDT_2304MS     15     B  118N:
+  B  119N:
+////////////////////////////////////////////////////////////////// Timer 1  B  120N:
+// Timer 1 Functions: SETUP_TIMER_1, GET_TIMER1, SET_TIMER1  B  121N:
+// Constants used for SETUP_TIMER_1() are:  B  122N:
+//      (or (via |) together constants from each group)  B  123N:
+#define T1_DISABLED         0  B  124N:
+#define T1_INTERNAL         0x85  B  125N:
+#define T1_EXTERNAL         0x87  B  126N:
+#define T1_EXTERNAL_SYNC    0x83  B  127N:
+  B  128N:
+#define T1_CLK_OUT          8  B  129N:
+  B  130N:
+#define T1_DIV_BY_1         0  B  131N:
+#define T1_DIV_BY_2         0x10  B  132N:
+#define T1_DIV_BY_4         0x20  B  133N:
+#define T1_DIV_BY_8         0x30  B  134N:
+  B  135N:
+////////////////////////////////////////////////////////////////// Timer 2  B  136N:
+// Timer 2 Functions: SETUP_TIMER_2, GET_TIMER2, SET_TIMER2  B  137N:
+// Constants used for SETUP_TIMER_2() are:  B  138N:
+#define T2_DISABLED         0  B  139N:
+#define T2_DIV_BY_1         4  B  140N:
+#define T2_DIV_BY_4         5  B  141N:
+#define T2_DIV_BY_16        6  B  142N:
+  B  143N:
+////////////////////////////////////////////////////////////////// CCP  B  144N:
+// CCP Functions: SETUP_CCPx, SET_PWMx_DUTY  B  145N:
+// CCP Variables: CCP_x, CCP_x_LOW, CCP_x_HIGH  B  146N:
+// Constants used for SETUP_CCPx() are:  B  147N:
+#define CCP_OFF                         0  B  148N:
+#define CCP_CAPTURE_FE                  4  B  149N:
+#define CCP_CAPTURE_RE                  5  B  150N:
+#define CCP_CAPTURE_DIV_4               6  B  151N:
+#define CCP_CAPTURE_DIV_16              7  B  152N:
+#define CCP_COMPARE_SET_ON_MATCH        8  B  153N:
+#define CCP_COMPARE_CLR_ON_MATCH        9  B  154N:
+#define CCP_COMPARE_INT                 0xA  B  155N:
+#define CCP_COMPARE_RESET_TIMER         0xB  B  156N:
+#define CCP_PWM                         0xC  B  157N:
+#define CCP_PWM_PLUS_1                  0x1c  B  158N:
+#define CCP_PWM_PLUS_2                  0x2c  B  159N:
+#define CCP_PWM_PLUS_3                  0x3c  B  160N:
+long CCP_1;  B  161N:V18
+#byte   CCP_1    =                      0x15            B  162N:
+#byte   CCP_1_LOW=                      0x15            B  163N:
+#byte   CCP_1_HIGH=                     0x16            B  164N:V19
+long CCP_2;  B  165N:V20V21
+#byte   CCP_2    =                      0x1B          B  166N:
+#byte   CCP_2_LOW=                      0x1B          B  167N:
+#byte   CCP_2_HIGH=                     0x1C          B  168N:V22
+////////////////////////////////////////////////////////////////// PSP  B  169N:
+// PSP Functions: SETUP_PSP, PSP_INPUT_FULL(), PSP_OUTPUT_FULL(),  B  170N:
+//                PSP_OVERFLOW(), INPUT_D(), OUTPUT_D()  B  171N:
+// PSP Variables: PSP_DATA  B  172N:
+// Constants used in SETUP_PSP() are:  B  173N:
+#define PSP_ENABLED                     0x10  B  174N:
+#define PSP_DISABLED                    0  B  175N:
+  B  176N:
+#byte   PSP_DATA=                       8     B  177N:V23
+  B  178N:
+////////////////////////////////////////////////////////////////// SPI  B  179N:
+// SPI Functions: SETUP_SPI, SPI_WRITE, SPI_READ, SPI_DATA_IN  B  180N:
+// Constants used in SETUP_SSP() are:  B  181N:
+#define SPI_MASTER       0x20  B  182N:
+#define SPI_SLAVE        0x24  B  183N:
+#define SPI_L_TO_H       0  B  184N:
+#define SPI_H_TO_L       0x10  B  185N:
+#define SPI_CLK_DIV_4    0  B  186N:
+#define SPI_CLK_DIV_16   1  B  187N:
+#define SPI_CLK_DIV_64   2  B  188N:
+#define SPI_CLK_T2       3  B  189N:
+#define SPI_SS_DISABLED  1  B  190N:
+  B  191N:
+#define SPI_SAMPLE_AT_END 0x8000  B  192N:
+#define SPI_XMIT_L_TO_H  0x4000  B  193N:
+  B  194N:
+////////////////////////////////////////////////////////////////// UART  B  195N:
+// Constants used in setup_uart() are:  B  196N:
+// FALSE - Turn UART off  B  197N:
+// TRUE  - Turn UART on  B  198N:
+#define UART_ADDRESS           2  B  199N:
+#define UART_DATA              4  B  200N:
+  B  201N:
+  B  202N:
+////////////////////////////////////////////////////////////////// ADC  B  203N:
+// ADC Functions: SETUP_ADC(), SETUP_ADC_PORTS() (aka SETUP_PORT_A),  B  204N:
+//                SET_ADC_CHANNEL(), READ_ADC()  B  205N:
+// Constants used for SETUP_ADC() are:  B  206N:
+#define ADC_OFF                0          // ADC Off  B  207N:
+#define ADC_CLOCK_DIV_2    0x100  B  208N:
+#define ADC_CLOCK_DIV_8     0x40  B  209N:
+#define ADC_CLOCK_DIV_32    0x80  B  210N:
+#define ADC_CLOCK_INTERNAL  0xc0          // Internal 2-6us  B  211N:
+  B  212N:
+// Constants used in SETUP_ADC_PORTS() are:  B  213N:
+#define NO_ANALOGS                           7    // None  B  214N:
+#define ALL_ANALOG                           0    // A0 A1 A2 A3 A5 E0 E1 E2   B  215N:
+#define AN0_AN1_AN2_AN4_AN5_AN6_AN7_VSS_VREF 1    // A0 A1 A2 A5 E0 E1 E2 VRefh=A3       B  216N:
+#define AN0_AN1_AN2_AN3_AN4                  2    // A0 A1 A2 A3 A5            B  217N:
+#define AN0_AN1_AN2_AN4_VSS_VREF             3    // A0 A1 A2 A5 VRefh=A3                B  218N:
+#define AN0_AN1_AN3                          4    // A0 A1 A3  B  219N:
+#define AN0_AN1_VSS_VREF                     5    // A0 A1 VRefh=A3  B  220N:
+#define AN0_AN1_AN4_AN5_AN6_AN7_VREF_VREF 0x08    // A0 A1 A5 E0 E1 E2 VRefh=A3 VRefl=A2       B  221N:
+#define AN0_AN1_AN2_AN3_AN4_AN5           0x09    // A0 A1 A2 A3 A5 E0          B  222N:
+#define AN0_AN1_AN2_AN4_AN5_VSS_VREF      0x0A    // A0 A1 A2 A5 E0 VRefh=A3             B  223N:
+#define AN0_AN1_AN4_AN5_VREF_VREF         0x0B    // A0 A1 A5 E0 VRefh=A3 VRefl=A2             B  224N:
+#define AN0_AN1_AN4_VREF_VREF             0x0C    // A0 A1 A5 VRefh=A3 VRefl=A2                B  225N:
+#define AN0_AN1_VREF_VREF                 0x0D    // A0 A1 VRefh=A3 VRefl=A2  B  226N:
+#define AN0                               0x0E    // A0  B  227N:
+#define AN0_VREF_VREF                     0x0F    // A0 VRefh=A3 VRefl=A2  B  228N:
+#define ANALOG_RA3_REF         0x1         //!old only provided for compatibility  B  229N:
+#define A_ANALOG               0x2         //!old only provided for compatibility    B  230N:
+#define A_ANALOG_RA3_REF       0x3         //!old only provided for compatibility    B  231N:
+#define RA0_RA1_RA3_ANALOG     0x4         //!old only provided for compatibility  B  232N:
+#define RA0_RA1_ANALOG_RA3_REF 0x5         //!old only provided for compatibility  B  233N:
+#define ANALOG_RA3_RA2_REF              0x8   //!old only provided for compatibility  B  234N:
+#define ANALOG_NOT_RE1_RE2              0x9   //!old only provided for compatibility    B  235N:
+#define ANALOG_NOT_RE1_RE2_REF_RA3      0xA   //!old only provided for compatibility    B  236N:
+#define ANALOG_NOT_RE1_RE2_REF_RA3_RA2  0xB   //!old only provided for compatibility    B  237N:
+#define A_ANALOG_RA3_RA2_REF            0xC   //!old only provided for compatibility    B  238N:
+#define RA0_RA1_ANALOG_RA3_RA2_REF      0xD   //!old only provided for compatibility  B  239N:
+#define RA0_ANALOG                      0xE   //!old only provided for compatibility  B  240N:
+#define RA0_ANALOG_RA3_RA2_REF          0xF   //!old only provided for compatibility  B  241N:
+  B  242N:
+  B  243N:
+// Constants used in READ_ADC() are:  B  244N:
+#define ADC_START_AND_READ     7   // This is the default if nothing is specified  B  245N:
+#define ADC_START_ONLY         1  B  246N:
+#define ADC_READ_ONLY          6  B  247N:
+  B  248N:
+  B  249N:
+  B  250N:
+////////////////////////////////////////////////////////////////// INT  B  251N:
+// Interrupt Functions: ENABLE_INTERRUPTS(), DISABLE_INTERRUPTS(),  B  252N:
+//                      EXT_INT_EDGE()  B  253N:
+//  B  254N:
+// Constants used in EXT_INT_EDGE() are:  B  255N:
+#define L_TO_H              0x40  B  256N:
+#define H_TO_L                 0  B  257N:
+// Constants used in ENABLE/DISABLE_INTERRUPTS() are:  B  258N:
+#define GLOBAL                    0x0BC0  B  259N:
+#define INT_RTCC                  0x0B20  B  260N:
+#define INT_RB                    0x0B08  B  261N:
+#define INT_EXT                   0x0B10  B  262N:
+#define INT_AD                    0x8C40  B  263N:
+#define INT_TBE                   0x8C10  B  264N:
+#define INT_RDA                   0x8C20  B  265N:
+#define INT_TIMER1                0x8C01  B  266N:
+#define INT_TIMER2                0x8C02  B  267N:
+#define INT_CCP1                  0x8C04  B  268N:
+#define INT_CCP2                  0x8D01  B  269N:
+#define INT_SSP                   0x8C08  B  270N:
+#define INT_PSP                   0x8C80  B  271N:
+#define INT_BUSCOL                0x8D08  B  272N:
+#define INT_EEPROM                0x8D10  B  273N:
+#define INT_TIMER0                0x0B20  B  274N:
+  B  275N:
+#list  B  276 :X1E
+ B  276 :
+// #device ICD=TRUE  A    5 :
+#device WRITE_EEPROM=ASYNC  A    6 :
+#fuses HS,NOWDT,NOLVP,NOPROTECT,NOBROWNOUT  A    7 :
+  A    8 :
+#use delay(clock=20000000)  A    9 :V25V27
+  A   10 :
+#use fast_io(A)  A   11 :
+#use fast_io(B)  A   12 :
+  A   13 :
+#use rs232(stream=terminal, baud=57600, xmit=PIN_C6, rcv=PIN_C7, ERRORS)  A   14 :V30
+  A   15 :
+#include <string.h> A   16 :
+ ////////////////////////////////////////////////////////////////////////////  C    1 :I2
+////        (C) Copyright 1996,2003 Custom Computer Services            ////  C    2 :
+//// This source code may only be used by licensed users of the CCS C   ////  C    3 :
+//// compiler.  This source code may only be distributed to other       ////  C    4 :
+//// licensed users of the CCS C compiler.  No other use, reproduction  ////  C    5 :
+//// or distribution is permitted without written permission.           ////  C    6 :
+//// Derivative programs created using this software in object code     ////  C    7 :
+//// form are not restricted in any way.                                ////  C    8 :
+////////////////////////////////////////////////////////////////////////////  C    9 :
+  C   10 :
+#ifndef _STRING  C   11 :
+#define _STRING  C   12 :
+#include <stddef.h> C   13 :
+ ///////////////////////////////////////////////////////////////////////////  D    1 :I3
+////        (C) Copyright 1996,2003 Custom Computer Services           ////  D    2 :
+//// This source code may only be used by licensed users of the CCS C  ////  D    3 :
+//// compiler.  This source code may only be distributed to other      ////  D    4 :
+//// licensed users of the CCS C compiler.  No other use, reproduction ////  D    5 :
+//// or distribution is permitted without written permission.          ////  D    6 :
+//// Derivative programs created using this software in object code    ////  D    7 :
+//// form are not restricted in any way.                               ////  D    8 :
+///////////////////////////////////////////////////////////////////////////  D    9 :
+  D   10 :
+#ifndef _STDDEF  D   11 :
+  D   12 :
+#define _STDDEF  D   13 :
+  D   14 :
+#if sizeof(int *)==1  D   15 :
+#define ptrdiff_t int  D   16 :
+#else  D   17 :
+#define ptrdiff_t long  D   18 :
+#endif  D   19 :
+  D   20 :
+#define size_t int  D   21 :
+#define wchar_t char  D   22 :
+#define NULL 0  D   23 :
+  D   24 :
+#define offsetof(s,f) (offsetofbit(s,f)/8)  D   25 :
+  D   26 :
+#endif  D   27 :E
+ D   27 :
+#include <ctype.h> C   14 :
+ ////////////////////////////////////////////////////////////////////////////  E    1 :I4
+////        (C) Copyright 1996,2003 Custom Computer Services            ////  E    2 :
+//// This source code may only be used by licensed users of the CCS C   ////  E    3 :
+//// compiler.  This source code may only be distributed to other       ////  E    4 :
+//// licensed users of the CCS C compiler.  No other use, reproduction  ////  E    5 :
+//// or distribution is permitted without written permission.           ////  E    6 :
+//// Derivative programs created using this software in object code     ////  E    7 :
+//// form are not restricted in any way.                                ////  E    8 :
+////////////////////////////////////////////////////////////////////////////  E    9 :
+  E   10 :
+#ifndef _CTYPE  E   11 :
+#define _CTYPE  E   12 :
+  E   13 :
+#define islower(x)  isamong(x,"abcdefghijklmnopqrstuvwxyz")  E   14 :
+#define isupper(x)  isamong(x,"ABCDEFGHIJKLMNOPQRSTUVWXYZ")  E   15 :
+#define isalnum(x)  isamong(x,"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")  E   16 :
+#define isalpha(x)  isamong(x,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")  E   17 :
+#define isdigit(x)  isamong(x,"0123456789")  E   18 :
+#define isspace(x)  (x==' ')  E   19 :
+#define isxdigit(x) isamong(x,"0123456789ABCDEFabcdef")  E   20 :
+#define iscntrl(x)  (x<' ')  E   21 :
+#define isprint(x)  (x>=' ')  E   22 :
+#define isgraph(x)  (x>' ')  E   23 :
+#define ispunct(x)  ((x>' ')&&!isalnum(x))  E   24 :
+  E   25 :
+#endif  E   26 :
+  E   27 :E
+ E   27 :
+  C   15 :
+  C   16 :
+  C   17 :
+//////////////////////////////////////////////  C   18 :
+//// Uncomment the following define to    ////  C   19 :
+//// allow some functions to use a        ////  C   20 :
+//// quicker algorithm, but use more ROM  ////  C   21 :
+////                                      ////  C   22 :
+//// #define FASTER_BUT_MORE_ROM          ////  C   23 :
+//////////////////////////////////////////////  C   24 :
+  C   25 :
+  C   26 :
+  C   27 :
+/*Copying functions*/  C   28 :
+/* standard template:  C   29 :
+   void *memmove(void *s1, void *s2, size_t n).  C   30 :
+   Copies max of n characters safely (not following ending '\0')  C   31 :
+   from s2 in s1; if s2 has less than n characters, appends 0 */  C   32 :
+  C   33 :
+char *memmove(void *s1,char *s2,size_t n)  C   34 :V32f313V34V35V36
+{  C   35 :{37
+   char *sc1;  C   36 :V37
+   char *sc2;  C   37 :V38
+   sc1=s1;  C   38 :
+   sc2=s2;  C   39 :
+   if(sc2<sc1 && sc1 <sc2 +n)  C   40 :
+      for(sc1+=n,sc2+=n;0<n;--n)  C   41 :
+         *--sc1=*--sc2;  C   42 :
+   else  C   43 :
+      for(;0<n;--n)  C   44 :
+         *sc1++=*sc2++;  C   45 :
+  return s1;  C   46 :
+  }  C   47 :}56
+  C   48 :
+/* compiler ignored the name 'strcpy()'; perhaps, it's reserved? C   49 :
+   Standard template: char *strcpy(char *s1, const char *s2)  C   50 :
+   copies the string s2 including the null character to s1*/  C   51 :
+  C   52 :
+char *strcopy(char *s1, char *s2)  C   53 :f319V40V41
+{  C   54 :{58
+  char *s;  C   55 :V42
+  C   56 :
+  for (s = s1; *s2 != 0; s++, s2++) {  C   57 :
+	  *s = *s2;  C   58 :{66
+  }  C   59 :}67
+  *s = *s2;  C   60 :
+  return(s1);  C   61 :
+}  C   62 :}68
+  C   63 :
+/* standard template:  C   64 :
+   char *strncpy(char *s1, const char *s2, size_t n).  C   65 :
+   Copies max of n characters (not following ending '\0')  C   66 :
+   from s2 in s1; if s2 has less than n characters, appends 0 */  C   67 :
+  C   68 :
+char *strncpy(char *s1, char *s2, size_t n)  C   69 :f321V44V45V46
+{  C   70 :{70
+  char *s;  C   71 :V47
+  C   72 :
+  for (s = s1; n > 0 && *s2 != '\0'; n--)  C   73 :
+     *s++ = *s2++;  C   74 :
+  for (; n > 0; n--)  C   75 :
+     *s++ = '\0';  C   76 :
+  C   77 :
+  return(s1);  C   78 :
+}  C   79 :}86
+/***********************************************************/  C   80 :
+  C   81 :
+/*concatenation functions*/  C   82 :
+/* standard template: char *strcat(char *s1, const char *s2)  C   83 :
+appends s2 to s1*/  C   84 :
+  C   85 :
+char *strcat(char *s1, char *s2)  C   86 :f322V49V50
+{  C   87 :{88
+   char *s;  C   88 :V51
+  C   89 :
+   for (s = s1; *s != '\0'; ++s);  C   90 :
+   while(*s2 != '\0')  C   91 :
+   {  C   92 :
+      *s = *s2;  C   93 :{99
+      ++s;  C   94 :
+      ++s2;  C   95 :
+   }  C   96 :}100
+  C   97 :
+   *s = '\0';  C   98 :
+   return(s1);  C   99 :
+}  C  100 :}101
+/* standard template: char *strncat(char *s1, char *s2,size_t n)  C  101 :
+appends not more than n characters from s2 to s1*/  C  102 :
+  C  103 :
+char *strncat(char *s1, char *s2, size_t n)  C  104 :f323V53V54V55
+{  C  105 :{103
+   char *s;  C  106 :V56
+  C  107 :
+   for (s = s1; *s != '\0'; ++s);  C  108 :
+   while(*s2 != '\0' && 0<n)  C  109 :
+   {  C  110 :
+      *s = *s2;  C  111 :{116
+      ++s;  C  112 :
+      ++s2;  C  113 :
+      --n;  C  114 :
+   }  C  115 :}117
+  C  116 :
+   *s = '\0';  C  117 :
+   return(s1);  C  118 :
+}  C  119 :}118
+  C  120 :
+/***********************************************************/  C  121 :
+  C  122 :
+  C  123 :
+/*comparison functions*/  C  124 :
+/* standard template: signed int memcmp(void *s1, void *s2).  C  125 :
+   Compares s1 & s2; returns -1 if s1<s2, 0 if s1=s2, 1 if s1>s2 */  C  126 :
+  C  127 :
+signed int memcmp(void * s1,char *s2,size_t n)  C  128 :f324V58V59V60
+{  C  129 :{120
+char *su1, *su2;  C  130 :V61V62
+for(su1=s1, su2=s2; 0<n; ++su1, ++su2, --n)  C  131 :
+{  C  132 :
+   if(*su1!=*su2)  C  133 :{128
+      return ((*su1<*su2)?1:+1);  C  134 :
+}  C  135 :}134
+return 0;  C  136 :
+}  C  137 :}135
+  C  138 :
+/* standard template: int strcmp(const char *s1, const char *s2).  C  139 :
+   Compares s1 & s2; returns -1 if s1<s2, 0 if s1=s2, 1 if s1>s2 */  C  140 :
+  C  141 :
+signed int strcmp(char *s1, char *s2)  C  142 :f327V64V65
+{  C  143 :{137
+   for (; *s1 == *s2; s1++, s2++)  C  144 :
+      if (*s1 == '\0')  C  145 :
+         return(0);  C  146 :
+   return((*s1 < *s2) ?-1: 1);  C  147 :
+}  C  148 :}150
+/* standard template: int strcoll(const char *s1, const char *s2).  C  149 :
+   Compares s1 & s2; returns -1 if s1<s2, 0 if s1=s2, 1 if s1>s2 */  C  150 :
+  C  151 :
+signed int strcoll(char *s1, char *s2)  C  152 :f328V67V68
+{  C  153 :{152
+   for (; *s1 == *s2; s1++, s2++)  C  154 :
+      if (*s1 == '\0')  C  155 :
+         return(0);  C  156 :
+   return((*s1 < *s2) ?-1: 1);  C  157 :
+}  C  158 :}165
+  C  159 :
+/* standard template:  C  160 :
+   int strncmp(const char *s1, const char *s2, size_t n).  C  161 :
+   Compares max of n characters (not following 0) from s1 to s2;  C  162 :
+   returns same as strcmp */  C  163 :
+  C  164 :
+signed int strncmp(char *s1, char *s2, size_t n)  C  165 :f329V70V71V72
+{  C  166 :{167
+   for (; n > 0; s1++, s2++, n--)  C  167 :
+      if (*s1 != *s2)  C  168 :
+         return((*s1 <*s2) ?-1: 1);  C  169 :
+      else if (*s1 == '\0')  C  170 :
+         return(0);  C  171 :
+   return(0);  C  172 :
+}  C  173 :}183
+/* standard template:  C  174 :
+   int strxfrm(const char *s1, const char *s2, size_t n).  C  175 :
+   transforms maximum of n characters from s2 and places them into s1*/  C  176 :
+size_t strxfrm(char *s1, char *s2, size_t n)  C  177 :f330V74V75V76
+{  C  178 :{185
+  char *s;  C  179 :V77
+  int n1;  C  180 :V78
+  n1=n;  C  181 :
+  for (s = s1; n > 0 && *s2 != '\0'; n--)  C  182 :
+     *s++ = *s2++;  C  183 :
+  for (; n > 0; n--)  C  184 :
+     *s++ = '\0';  C  185 :
+  C  186 :
+  return(n1);  C  187 :
+}  C  188 :}201
+  C  189 :
+  C  190 :
+  C  191 :
+  C  192 :
+  C  193 :
+/***********************************************************/  C  194 :
+/*Search functions*/  C  195 :
+/* standard template: void *memchr(const char *s, int c).  C  196 :
+   Finds first occurrence of c in n characters of s */  C  197 :
+  C  198 :
+char *memchr(void *s,int c,size_t n)  C  199 :f332V80V81V82
+{  C  200 :{203
+   char uc;  C  201 :V83
+   char *su;  C  202 :V84
+   uc=c;  C  203 :
+   for(su=s;0<n;++su,--n)  C  204 :
+      if(*su==uc)  C  205 :
+      return su;  C  206 :
+   return NULL;  C  207 :
+}  C  208 :}213
+  C  209 :
+/* standard template: char *strchr(const char *s, int c).  C  210 :
+   Finds first occurrence of c in s */  C  211 :
+  C  212 :
+char *strchr(char *s, int c)  C  213 :f336V86V87
+{  C  214 :{215
+   for (; *s != c; s++)  C  215 :
+      if (*s == '\0')  C  216 :
+         return(0);  C  217 :
+   return(s);  C  218 :
+}  C  219 :}225
+/* standard template:  C  220 :
+   size_t strcspn(const char *s1, const char *s2).  C  221 :
+   Computes length of max initial segment of s1 that  C  222 :
+   consists entirely of characters NOT from s2*/  C  223 :
+  C  224 :
+int *strcspn(char *s1, char *s2)  C  225 :f337V89V90
+{  C  226 :{227
+   char *sc1, *sc2;  C  227 :V91V92
+  C  228 :
+   for (sc1 = s1; *sc1 != 0; sc1++)  C  229 :
+      for (sc2 = s2; *sc2 != 0; sc2++)  C  230 :
+         if (*sc1 == *sc2)  C  231 :
+            return(sc1 - s1);  C  232 :
+   return(sc1 - s1);  C  233 :
+}  C  234 :}243
+/* standard template:  C  235 :
+   char *strpbrk(const char *s1, const char *s2).  C  236 :
+   Locates first occurence of any character from s2 in s1;  C  237 :
+   returns s1 if s2 is empty string */  C  238 :
+  C  239 :
+char *strpbrk(char *s1, char *s2)  C  240 :f338V94V95
+{  C  241 :{245
+   char *sc1, *sc2;  C  242 :V96V97
+  C  243 :
+   for (sc1 = s1; *sc1 != 0; sc1++)  C  244 :
+      for (sc2 = s2; *sc2 != 0; sc2++)  C  245 :
+         if (*sc1 == *sc2)  C  246 :
+            return(sc1);  C  247 :
+   return(0);  C  248 :
+}  C  249 :}261
+  C  250 :
+  C  251 :
+/* standard template: char *strrchr(const char *s, int c).  C  252 :
+   Finds last occurrence of c in s */  C  253 :
+  C  254 :
+char *strrchr(char *s, int c)  C  255 :f339V99V100
+{  C  256 :{263
+   char *p;  C  257 :V101
+  C  258 :
+   for (p = 0; ; s++)  C  259 :
+   {  C  260 :
+      if (*s == c)  C  261 :{269
+         p = s;  C  262 :
+      if (*s == '\0')  C  263 :
+         return(p);  C  264 :
+   }  C  265 :}274
+}  C  266 :}275
+/* computes length of max initial segment of s1 consisting  C  267 :
+   entirely of characters from s2 */  C  268 :
+  C  269 :
+int *strspn(char *s1, char *s2)  C  270 :f341V103V104
+{  C  271 :{277
+   char *sc1, *sc2;  C  272 :V105V106
+  C  273 :
+   for (sc1 = s1; *sc1 != 0; sc1++)  C  274 :
+      for (sc2 = s2; ; sc2++)  C  275 :
+	 if (*sc2 == '\0')  C  276 :
+	    return(sc1 - s1);  C  277 :
+         else if (*sc1 == *sc2)  C  278 :
+            break;  C  279 :
+   return(sc1 - s1);  C  280 :
+}  C  281 :}294
+/* standard template:  C  282 :
+   char *strstr(const char *s1, const char *s2);  C  283 :
+   Locates first occurence of character sequence s2 in s1;  C  284 :
+   returns 0 if s2 is empty string  C  285 :
+  C  286 :
+   Uncomment #define FASTER_BUT_MORE_ROM at the top of the  C  287 :
+   file to use the faster algorithm */  C  288 :
+char *strstr(char *s1, char *s2)  C  289 :f342V108V109
+{  C  290 :{296
+	char *s, *t;  C  291 :V110V111
+  C  292 :
+   #ifdef FASTER_BUT_MORE_ROM  C  293 :
+   if (*s2 == '\0')  C  294 :
+         return(s1);  C  295 :
+   #endif  C  296 :
+  C  297 :
+	while (*s1)  C  298 :
+   {  C  299 :
+      for(s = s1, t = s2; *t && *s == *t; ++s, ++t);  C  300 :{301
+  C  301 :
+		if (*t == '\0')  C  302 :
+			return s1;  C  303 :
+      ++s1;  C  304 :
+      #ifdef FASTER_BUT_MORE_ROM  C  305 :
+         while(*s1 != '\0' && *s1 != *s2)  C  306 :
+            ++s1;  C  307 :
+      #endif  C  308 :
+	}  C  309 :}312
+	return 0;  C  310 :
+}  C  311 :}313
+  C  312 :
+/* standard template: char *strtok(char *s1, const char *s2).  C  313 :
+  C  314 :
+   Finds next token in s1 delimited by a character from separator  C  315 :
+   string s2 (which can be different from call to call).  First call  C  316 :
+   starts at beginning of s1 searching for first character NOT  C  317 :
+   contained in s2; returns 0 if none is found.  C  318 :
+   If one is found, it is the start of first token (return value).  C  319 :
+   Function then searches from there for a character contained in s2.  C  320 :
+   If none is found, current token extends to end of s1, and subsequent  C  321 :
+   searches for a token will return 0.  If one is found, it is  C  322 :
+   overwritten by '\0', which terminates current token.  Function saves  C  323 :
+   pointer to following character from which next search will start.  C  324 :
+   Each subsequent call, with 0 as first argument, starts searching  C  325 :
+   from saved pointer */  C  326 :
+  C  327 :
+char *strtok(char *s1, char *s2)  C  328 :f344V113V114
+{  C  329 :{315
+   char *beg, *end;  C  330 :V115V116
+   static char *save;  C  331 :V117
+  C  332 :
+   beg = (s1)?s1: save;  C  333 :
+   beg += strspn(beg, s2);  C  334 :
+   if (*beg == '\0')  C  335 :
+   {  C  336 :
+      *save = ' ';  C  337 :{322
+      return(0);  C  338 :
+   }  C  339 :}323
+   end = strpbrk(beg, s2);  C  340 :
+   if (*end != '\0')  C  341 :
+   {  C  342 :
+      *end = '\0';  C  343 :{326
+      end++;  C  344 :
+   }  C  345 :}327
+   save = end;  C  346 :
+   return(beg);  C  347 :
+}  C  348 :}328
+  C  349 :
+/*****************************************************************/  C  350 :
+/*Miscellaneous functions*/  C  351 :
+/* standard template  C  352 :
+maps error number in errnum to an error message string  C  353 :
+Returns: Pointer to string  C  354 :
+*/  C  355 :
+#ifdef _ERRNO  C  356 :
+char * strerror(int errnum)  C  357 :
+{  C  358 :
+char s[15];  C  359 :
+switch( errnum)  C  360 :
+{  C  361 :
+case 0:  C  362 :
+   strcpy(s,"no errors");  C  363 :
+   return s;  C  364 :
+case EDOM :  C  365 :
+   strcpy(s,"domain error");  C  366 :
+   return s;  C  367 :
+case ERANGE:  C  368 :
+   strcpy(s,"range error");  C  369 :
+   return s;  C  370 :
+}  C  371 :
+}  C  372 :
+#ENDIF  C  373 :
+/* standard template: size_t strlen(const char *s).  C  374 :
+   Computes length of s1 (preceding terminating 0) */  C  375 :
+  C  376 :
+int *strlen(char *s)  C  377 :f348V119
+{  C  378 :{330
+   char *sc;  C  379 :V120
+  C  380 :
+   for (sc = s; *sc != 0; sc++);  C  381 :
+   return(sc - s);  C  382 :
+}  C  383 :}338
+  C  384 :
+/* standard template: size_t stricmp(const char *s1, const char *s2).  C  385 :
+   Compares s1 to s2 ignoring case (upper vs. lower) */  C  386 :
+  C  387 :
+signed int stricmp(char *s1, char *s2)  C  388 :f350V122V123
+{  C  389 :{340
+ for(; *s1==*s2||(isalpha(*s1)&&isalpha(*s2)&&(*s1==*s2+32||*s2==*s1+32));  C  390 :
+    s1++, s2++)  C  391 :
+    if (*s1 == '\0')  C  392 :
+       return(0);  C  393 :
+ return((*s1 < *s2) ?-1: 1);  C  394 :
+}  C  395 :}375
+  C  396 :
+  C  397 :
+/* standard template: char *strlwr(char *s).  C  398 :
+   Replaces uppercase letters by lowercase;  C  399 :
+   returns pointer to new string s */  C  400 :
+  C  401 :
+char *strlwr(char *s)  C  402 :f353V127
+{  C  403 :{377
+   char *p;  C  404 :V128
+  C  405 :
+   for (p = s; *p != '\0'; p++)  C  406 :
+      if (*p >= 'A' && *p <='Z')  C  407 :
+         *p += 'a' - 'A';  C  408 :
+   return(s);  C  409 :
+}  C  410 :}389
+  C  411 :
+  C  412 :
+/************************************************************/  C  413 :
+  C  414 :
+  C  415 :
+#endif  C  416 :E
+ C  416 :
+#include <stdlib.h> A   17 :
+ ///////////////////////////////////////////////////////////////////////////  F    1 :I5
+////        (C) Copyright 1996,2003 Custom Computer Services           ////  F    2 :
+//// This source code may only be used by licensed users of the CCS C  ////  F    3 :
+//// compiler.  This source code may only be distributed to other      ////  F    4 :
+//// licensed users of the CCS C compiler.  No other use, reproduction ////  F    5 :
+//// or distribution is permitted without written permission.          ////  F    6 :
+//// Derivative programs created using this software in object code    ////  F    7 :
+//// form are not restricted in any way.                               ////  F    8 :
+///////////////////////////////////////////////////////////////////////////  F    9 :
+  F   10 :
+#ifndef _STDLIB  F   11 :
+#define _STDLIB  F   12 :
+  F   13 :
+//---------------------------------------------------------------------------  F   14 :
+// Definitions and types  F   15 :
+//---------------------------------------------------------------------------  F   16 :
+  F   17 :
+#ifndef RAND_MAX  F   18 :
+#define RAND_MAX  32767    // The value of which is the maximum value  F   19 :
+                           // ... returned by the rand function  F   20 :
+#endif  F   21 :
+  F   22 :
+typedef struct {  F   23 :
+   signed int quot;  F   24 :T129
+   signed int rem;  F   25 :
+} div_t;  F   26 :
+  F   27 :
+typedef struct {  F   28 :
+   signed long quot;  F   29 :T133
+   signed long rem;  F   30 :
+} ldiv_t;  F   31 :
+  F   32 :
+#include <stddef.h> F   33 :
+ ///////////////////////////////////////////////////////////////////////////  D    1 :I3
+////        (C) Copyright 1996,2003 Custom Computer Services           ////  D    2 :
+//// This source code may only be used by licensed users of the CCS C  ////  D    3 :
+//// compiler.  This source code may only be distributed to other      ////  D    4 :
+//// licensed users of the CCS C compiler.  No other use, reproduction ////  D    5 :
+//// or distribution is permitted without written permission.          ////  D    6 :
+//// Derivative programs created using this software in object code    ////  D    7 :
+//// form are not restricted in any way.                               ////  D    8 :
+///////////////////////////////////////////////////////////////////////////  D    9 :
+  D   10 :
+#ifndef _STDDEF  D   11 :
+  D   12 :
+#define _STDDEF  D   13 :
+  D   14 :
+#if sizeof(int *)==1  D   15 :
+#define ptrdiff_t int  D   16 :
+#else  D   17 :
+#define ptrdiff_t long  D   18 :
+#endif  D   19 :
+  D   20 :
+#define size_t int  D   21 :
+#define wchar_t char  D   22 :
+#define NULL 0  D   23 :
+  D   24 :
+#define offsetof(s,f) (offsetofbit(s,f)/8)  D   25 :
+  D   26 :
+#endif  D   27 :E
+ D   27 :
+  F   34 :
+//---------------------------------------------------------------------------  F   35 :
+// String conversion functions  F   36 :
+//---------------------------------------------------------------------------  F   37 :
+  F   38 :
+/* Standard template: float atof(char * s)  F   39 :
+ * converts the initial portion of the string s to a float.  F   40 :
+ * returns the converted value if any, 0 otherwise  F   41 :
+ */  F   42 :
+float atof(char * s);  F   43 :f360V138P360
+  F   44 :
+/* Standard template: signed int  atoi(char * s)  F   45 :
+ * converts the initial portion of the string s to a signed int  F   46 :
+ * returns the converted value if any, 0 otherwise  F   47 :
+ */  F   48 :
+signed int atoi(char *s);  F   49 :f361V140P361
+  F   50 :
+/* Syntax: signed int32  atoi32(char * s)  F   51 :
+   converts the initial portion of the string s to a signed int32  F   52 :
+   returns the converted value if any, 0 otherwise*/  F   53 :
+signed int32 atoi32(char *s);  F   54 :f362V142P362
+  F   55 :
+/* Standard template: signed long  atol(char * s)  F   56 :
+ * converts the initial portion of the string s to a signed long  F   57 :
+ * returns the converted value if any, 0 otherwise  F   58 :
+ */  F   59 :
+signed long atol(char *s);  F   60 :f363V144P363
+  F   61 :
+/* Standard template: float strtol(char * s,char *endptr)  F   62 :
+ * converts the initial portion of the string s to a float  F   63 :
+ * returns the converted value if any, 0 otherwise  F   64 :
+ * the final string is returned in the endptr, if endptr is not null  F   65 :
+ */  F   66 :
+float strtod(char *s,char *endptr);  F   67 :f364V146V147P364
+  F   68 :
+/* Standard template: long strtoul(char * s,char *endptr,signed int base)  F   69 :
+ * converts the initial portion of the string s, represented as an  F   70 :
+ * integral value of radix base  to a signed long.  F   71 :
+ * Returns the converted value if any, 0 otherwise  F   72 :
+ * the final string is returned in the endptr, if endptr is not null  F   73 :
+ */  F   74 :
+signed long strtol(char *s,char *endptr,signed int base);  F   75 :f366V149V150V151P366
+  F   76 :
+/* Standard template: long strtoul(char * s,char *endptr,signed int base)  F   77 :
+ * converts the initial portion of the string s, represented as an  F   78 :
+ * integral value of radix base to a unsigned long.  F   79 :
+ * returns the converted value if any, 0 otherwise  F   80 :
+ * the final string is returned in the endptr, if endptr is not null  F   81 :
+ */  F   82 :
+long strtoul(char *s,char *endptr,signed int base);  F   83 :f368V153V154V155P368
+  F   84 :
+//---------------------------------------------------------------------------  F   85 :
+// Pseudo-random sequence generation functions  F   86 :
+//---------------------------------------------------------------------------  F   87 :
+  F   88 :
+/* The rand function computes a sequence of pseudo-random integers in  F   89 :
+ * the range 0 to RAND_MAX  F   90 :
+ *  F   91 :
+ * Parameters:  F   92 :
+ *       (none)  F   93 :
+ *  F   94 :
+ * Returns:  F   95 :
+ *       The pseudo-random integer  F   96 :
+ */  F   97 :
+long rand(void);  F   98 :f369P369
+  F   99 :
+/* The srand function uses the argument as a seed for a new sequence of  F  100 :
+ * pseudo-random numbers to be returned by subsequent calls to rand.  F  101 :
+ *  F  102 :
+ * Parameters:  F  103 :
+ *       [in] seed: The seed value to start from. You might need to pass  F  104 :
+ *  F  105 :
+ * Returns:  F  106 :
+ *       (none)  F  107 :
+ *  F  108 :
+ * Remarks  F  109 :
+ *          The srand function sets the starting point for generating  F  110 :
+ *       a series of pseudorandom integers. To reinitialize the  F  111 :
+ *       generator, use 1 as the seed argument. Any other value for  F  112 :
+ *       seed sets the generator to a random starting point. rand  F  113 :
+ *       retrieves the pseudorandom numbers that are generated.  F  114 :
+ *       Calling rand before any call to srand generates the same  F  115 :
+ *       sequence as calling srand with seed passed as 1.  F  116 :
+ *          Usually, you need to pass a time here from outer source  F  117 :
+ *       so that the numbers will be different every time you run.  F  118 :
+ */  F  119 :
+void srand(unsigned int32 seed);  F  120 :f370V158P370
+  F  121 :
+//---------------------------------------------------------------------------  F  122 :
+// Memory management functions  F  123 :
+//---------------------------------------------------------------------------  F  124 :
+  F  125 :
+// Comming soon  F  126 :
+  F  127 :
+//---------------------------------------------------------------------------  F  128 :
+// Communication with the environment  F  129 :
+//---------------------------------------------------------------------------  F  130 :
+  F  131 :
+/* The function returns 0 always  F  132 :
+ */  F  133 :
+signed int system(char *string);  F  134 :f372V160P372
+  F  135 :
+//---------------------------------------------------------------------------  F  136 :
+// Searching and sorting utilities  F  137 :
+//---------------------------------------------------------------------------  F  138 :
+  F  139 :
+/* Performs a binary search of a sorted array..  F  140 :
+ *  F  141 :
+ * Parameters:  F  142 :
+ *       [in] key: Object to search for  F  143 :
+ *       [in] base: Pointer to base of search data  F  144 :
+ *       [in] num: Number of elements  F  145 :
+ *       [in] width: Width of elements  F  146 :
+ *       [in] compare: Function that compares two elements  F  147 :
+ *  F  148 :
+ * Returns:  F  149 :
+ *       bsearch returns a pointer to an occurrence of key in the array pointed  F  150 :
+ *       to by base. If key is not found, the function returns NULL. If the  F  151 :
+ *       array is not in order or contains duplicate records with identical keys,  F  152 :
+ *       the result is unpredictable.  F  153 :
+ */  F  154 :
+//void *bsearch(const void *key, const void *base, size_t num, size_t width,  F  155 :
+//              int (*compare)(const void *, const void *));  F  156 :
+  F  157 :
+/* Performs the shell-metzner sort (not the quick sort algorithm). The contents  F  158 :
+ * of the array are sorted into ascending order according to a comparison  F  159 :
+ * function pointed to by compar.  F  160 :
+ *  F  161 :
+ * Parameters:  F  162 :
+ *       [in] base: Pointer to base of search data  F  163 :
+ *       [in] num: Number of elements  F  164 :
+ *       [in] width: Width of elements  F  165 :
+ *       [in] compare: Function that compares two elements  F  166 :
+ *  F  167 :
+ * Returns:  F  168 :
+ *       (none)  F  169 :
+ */  F  170 :
+//void *qsort(const void *base, size_t num, size_t width,  F  171 :
+//              int (*compare)(const void *, const void *));  F  172 :
+  F  173 :
+//---------------------------------------------------------------------------  F  174 :
+// Integer arithmetic functions  F  175 :
+//---------------------------------------------------------------------------  F  176 :
+  F  177 :
+#define labs abs  F  178 :
+  F  179 :
+div_t div(signed int numer,signed int denom);  F  180 :f375V162V163P375
+ldiv_t ldiv(signed long numer,signed long denom);  F  181 :f378V165V166P378
+  F  182 :
+//---------------------------------------------------------------------------  F  183 :
+// Multibyte character functions  F  184 :
+//---------------------------------------------------------------------------  F  185 :
+  F  186 :
+// Not supported  F  187 :
+  F  188 :
+//---------------------------------------------------------------------------  F  189 :
+// Multibyte string functions  F  190 :
+//---------------------------------------------------------------------------  F  191 :
+  F  192 :
+// Not supported  F  193 :
+  F  194 :
+  F  195 :
+//---------------------------------------------------------------------------  F  196 :
+// Internal implementation  F  197 :
+//---------------------------------------------------------------------------  F  198 :
+  F  199 :
+#include <stddef.h> F  200 :
+ ///////////////////////////////////////////////////////////////////////////  D    1 :I3
+////        (C) Copyright 1996,2003 Custom Computer Services           ////  D    2 :
+//// This source code may only be used by licensed users of the CCS C  ////  D    3 :
+//// compiler.  This source code may only be distributed to other      ////  D    4 :
+//// licensed users of the CCS C compiler.  No other use, reproduction ////  D    5 :
+//// or distribution is permitted without written permission.          ////  D    6 :
+//// Derivative programs created using this software in object code    ////  D    7 :
+//// form are not restricted in any way.                               ////  D    8 :
+///////////////////////////////////////////////////////////////////////////  D    9 :
+  D   10 :
+#ifndef _STDDEF  D   11 :
+  D   12 :
+#define _STDDEF  D   13 :
+  D   14 :
+#if sizeof(int *)==1  D   15 :
+#define ptrdiff_t int  D   16 :
+#else  D   17 :
+#define ptrdiff_t long  D   18 :
+#endif  D   19 :
+  D   20 :
+#define size_t int  D   21 :
+#define wchar_t char  D   22 :
+#define NULL 0  D   23 :
+  D   24 :
+#define offsetof(s,f) (offsetofbit(s,f)/8)  D   25 :
+  D   26 :
+#endif  D   27 :E
+ D   27 :
+#include <string.h> F  201 :
+ ////////////////////////////////////////////////////////////////////////////  C    1 :I2
+////        (C) Copyright 1996,2003 Custom Computer Services            ////  C    2 :
+//// This source code may only be used by licensed users of the CCS C   ////  C    3 :
+//// compiler.  This source code may only be distributed to other       ////  C    4 :
+//// licensed users of the CCS C compiler.  No other use, reproduction  ////  C    5 :
+//// or distribution is permitted without written permission.           ////  C    6 :
+//// Derivative programs created using this software in object code     ////  C    7 :
+//// form are not restricted in any way.                                ////  C    8 :
+////////////////////////////////////////////////////////////////////////////  C    9 :
+  C   10 :
+#ifndef _STRING  C   11 :
+#define _STRING  C   12 :
+#include <stddef.h>  C   13 :
+#include <ctype.h>  C   14 :
+  C   15 :
+  C   16 :
+  C   17 :
+//////////////////////////////////////////////  C   18 :
+//// Uncomment the following define to    ////  C   19 :
+//// allow some functions to use a        ////  C   20 :
+//// quicker algorithm, but use more ROM  ////  C   21 :
+////                                      ////  C   22 :
+//// #define FASTER_BUT_MORE_ROM          ////  C   23 :
+//////////////////////////////////////////////  C   24 :
+  C   25 :
+  C   26 :
+  C   27 :
+/*Copying functions*/  C   28 :
+/* standard template:  C   29 :
+   void *memmove(void *s1, void *s2, size_t n).  C   30 :
+   Copies max of n characters safely (not following ending '\0')  C   31 :
+   from s2 in s1; if s2 has less than n characters, appends 0 */  C   32 :
+  C   33 :
+char *memmove(void *s1,char *s2,size_t n)  C   34 :
+{  C   35 :
+   char *sc1;  C   36 :
+   char *sc2;  C   37 :
+   sc1=s1;  C   38 :
+   sc2=s2;  C   39 :
+   if(sc2<sc1 && sc1 <sc2 +n)  C   40 :
+      for(sc1+=n,sc2+=n;0<n;--n)  C   41 :
+         *--sc1=*--sc2;  C   42 :
+   else  C   43 :
+      for(;0<n;--n)  C   44 :
+         *sc1++=*sc2++;  C   45 :
+  return s1;  C   46 :
+  }  C   47 :
+  C   48 :
+/* compiler ignored the name 'strcpy()'; perhaps, it's reserved? C   49 :
+   Standard template: char *strcpy(char *s1, const char *s2)  C   50 :
+   copies the string s2 including the null character to s1*/  C   51 :
+  C   52 :
+char *strcopy(char *s1, char *s2)  C   53 :
+{  C   54 :
+  char *s;  C   55 :
+  C   56 :
+  for (s = s1; *s2 != 0; s++, s2++) {  C   57 :
+	  *s = *s2;  C   58 :
+  }  C   59 :
+  *s = *s2;  C   60 :
+  return(s1);  C   61 :
+}  C   62 :
+  C   63 :
+/* standard template:  C   64 :
+   char *strncpy(char *s1, const char *s2, size_t n).  C   65 :
+   Copies max of n characters (not following ending '\0')  C   66 :
+   from s2 in s1; if s2 has less than n characters, appends 0 */  C   67 :
+  C   68 :
+char *strncpy(char *s1, char *s2, size_t n)  C   69 :
+{  C   70 :
+  char *s;  C   71 :
+  C   72 :
+  for (s = s1; n > 0 && *s2 != '\0'; n--)  C   73 :
+     *s++ = *s2++;  C   74 :
+  for (; n > 0; n--)  C   75 :
+     *s++ = '\0';  C   76 :
+  C   77 :
+  return(s1);  C   78 :
+}  C   79 :
+/***********************************************************/  C   80 :
+  C   81 :
+/*concatenation functions*/  C   82 :
+/* standard template: char *strcat(char *s1, const char *s2)  C   83 :
+appends s2 to s1*/  C   84 :
+  C   85 :
+char *strcat(char *s1, char *s2)  C   86 :
+{  C   87 :
+   char *s;  C   88 :
+  C   89 :
+   for (s = s1; *s != '\0'; ++s);  C   90 :
+   while(*s2 != '\0')  C   91 :
+   {  C   92 :
+      *s = *s2;  C   93 :
+      ++s;  C   94 :
+      ++s2;  C   95 :
+   }  C   96 :
+  C   97 :
+   *s = '\0';  C   98 :
+   return(s1);  C   99 :
+}  C  100 :
+/* standard template: char *strncat(char *s1, char *s2,size_t n)  C  101 :
+appends not more than n characters from s2 to s1*/  C  102 :
+  C  103 :
+char *strncat(char *s1, char *s2, size_t n)  C  104 :
+{  C  105 :
+   char *s;  C  106 :
+  C  107 :
+   for (s = s1; *s != '\0'; ++s);  C  108 :
+   while(*s2 != '\0' && 0<n)  C  109 :
+   {  C  110 :
+      *s = *s2;  C  111 :
+      ++s;  C  112 :
+      ++s2;  C  113 :
+      --n;  C  114 :
+   }  C  115 :
+  C  116 :
+   *s = '\0';  C  117 :
+   return(s1);  C  118 :
+}  C  119 :
+  C  120 :
+/***********************************************************/  C  121 :
+  C  122 :
+  C  123 :
+/*comparison functions*/  C  124 :
+/* standard template: signed int memcmp(void *s1, void *s2).  C  125 :
+   Compares s1 & s2; returns -1 if s1<s2, 0 if s1=s2, 1 if s1>s2 */  C  126 :
+  C  127 :
+signed int memcmp(void * s1,char *s2,size_t n)  C  128 :
+{  C  129 :
+char *su1, *su2;  C  130 :
+for(su1=s1, su2=s2; 0<n; ++su1, ++su2, --n)  C  131 :
+{  C  132 :
+   if(*su1!=*su2)  C  133 :
+      return ((*su1<*su2)?1:+1);  C  134 :
+}  C  135 :
+return 0;  C  136 :
+}  C  137 :
+  C  138 :
+/* standard template: int strcmp(const char *s1, const char *s2).  C  139 :
+   Compares s1 & s2; returns -1 if s1<s2, 0 if s1=s2, 1 if s1>s2 */  C  140 :
+  C  141 :
+signed int strcmp(char *s1, char *s2)  C  142 :
+{  C  143 :
+   for (; *s1 == *s2; s1++, s2++)  C  144 :
+      if (*s1 == '\0')  C  145 :
+         return(0);  C  146 :
+   return((*s1 < *s2) ?-1: 1);  C  147 :
+}  C  148 :
+/* standard template: int strcoll(const char *s1, const char *s2).  C  149 :
+   Compares s1 & s2; returns -1 if s1<s2, 0 if s1=s2, 1 if s1>s2 */  C  150 :
+  C  151 :
+signed int strcoll(char *s1, char *s2)  C  152 :
+{  C  153 :
+   for (; *s1 == *s2; s1++, s2++)  C  154 :
+      if (*s1 == '\0')  C  155 :
+         return(0);  C  156 :
+   return((*s1 < *s2) ?-1: 1);  C  157 :
+}  C  158 :
+  C  159 :
+/* standard template:  C  160 :
+   int strncmp(const char *s1, const char *s2, size_t n).  C  161 :
+   Compares max of n characters (not following 0) from s1 to s2;  C  162 :
+   returns same as strcmp */  C  163 :
+  C  164 :
+signed int strncmp(char *s1, char *s2, size_t n)  C  165 :
+{  C  166 :
+   for (; n > 0; s1++, s2++, n--)  C  167 :
+      if (*s1 != *s2)  C  168 :
+         return((*s1 <*s2) ?-1: 1);  C  169 :
+      else if (*s1 == '\0')  C  170 :
+         return(0);  C  171 :
+   return(0);  C  172 :
+}  C  173 :
+/* standard template:  C  174 :
+   int strxfrm(const char *s1, const char *s2, size_t n).  C  175 :
+   transforms maximum of n characters from s2 and places them into s1*/  C  176 :
+size_t strxfrm(char *s1, char *s2, size_t n)  C  177 :
+{  C  178 :
+  char *s;  C  179 :
+  int n1;  C  180 :
+  n1=n;  C  181 :
+  for (s = s1; n > 0 && *s2 != '\0'; n--)  C  182 :
+     *s++ = *s2++;  C  183 :
+  for (; n > 0; n--)  C  184 :
+     *s++ = '\0';  C  185 :
+  C  186 :
+  return(n1);  C  187 :
+}  C  188 :
+  C  189 :
+  C  190 :
+  C  191 :
+  C  192 :
+  C  193 :
+/***********************************************************/  C  194 :
+/*Search functions*/  C  195 :
+/* standard template: void *memchr(const char *s, int c).  C  196 :
+   Finds first occurrence of c in n characters of s */  C  197 :
+  C  198 :
+char *memchr(void *s,int c,size_t n)  C  199 :
+{  C  200 :
+   char uc;  C  201 :
+   char *su;  C  202 :
+   uc=c;  C  203 :
+   for(su=s;0<n;++su,--n)  C  204 :
+      if(*su==uc)  C  205 :
+      return su;  C  206 :
+   return NULL;  C  207 :
+}  C  208 :
+  C  209 :
+/* standard template: char *strchr(const char *s, int c).  C  210 :
+   Finds first occurrence of c in s */  C  211 :
+  C  212 :
+char *strchr(char *s, int c)  C  213 :
+{  C  214 :
+   for (; *s != c; s++)  C  215 :
+      if (*s == '\0')  C  216 :
+         return(0);  C  217 :
+   return(s);  C  218 :
+}  C  219 :
+/* standard template:  C  220 :
+   size_t strcspn(const char *s1, const char *s2).  C  221 :
+   Computes length of max initial segment of s1 that  C  222 :
+   consists entirely of characters NOT from s2*/  C  223 :
+  C  224 :
+int *strcspn(char *s1, char *s2)  C  225 :
+{  C  226 :
+   char *sc1, *sc2;  C  227 :
+  C  228 :
+   for (sc1 = s1; *sc1 != 0; sc1++)  C  229 :
+      for (sc2 = s2; *sc2 != 0; sc2++)  C  230 :
+         if (*sc1 == *sc2)  C  231 :
+            return(sc1 - s1);  C  232 :
+   return(sc1 - s1);  C  233 :
+}  C  234 :
+/* standard template:  C  235 :
+   char *strpbrk(const char *s1, const char *s2).  C  236 :
+   Locates first occurence of any character from s2 in s1;  C  237 :
+   returns s1 if s2 is empty string */  C  238 :
+  C  239 :
+char *strpbrk(char *s1, char *s2)  C  240 :
+{  C  241 :
+   char *sc1, *sc2;  C  242 :
+  C  243 :
+   for (sc1 = s1; *sc1 != 0; sc1++)  C  244 :
+      for (sc2 = s2; *sc2 != 0; sc2++)  C  245 :
+         if (*sc1 == *sc2)  C  246 :
+            return(sc1);  C  247 :
+   return(0);  C  248 :
+}  C  249 :
+  C  250 :
+  C  251 :
+/* standard template: char *strrchr(const char *s, int c).  C  252 :
+   Finds last occurrence of c in s */  C  253 :
+  C  254 :
+char *strrchr(char *s, int c)  C  255 :
+{  C  256 :
+   char *p;  C  257 :
+  C  258 :
+   for (p = 0; ; s++)  C  259 :
+   {  C  260 :
+      if (*s == c)  C  261 :
+         p = s;  C  262 :
+      if (*s == '\0')  C  263 :
+         return(p);  C  264 :
+   }  C  265 :
+}  C  266 :
+/* computes length of max initial segment of s1 consisting  C  267 :
+   entirely of characters from s2 */  C  268 :
+  C  269 :
+int *strspn(char *s1, char *s2)  C  270 :
+{  C  271 :
+   char *sc1, *sc2;  C  272 :
+  C  273 :
+   for (sc1 = s1; *sc1 != 0; sc1++)  C  274 :
+      for (sc2 = s2; ; sc2++)  C  275 :
+	 if (*sc2 == '\0')  C  276 :
+	    return(sc1 - s1);  C  277 :
+         else if (*sc1 == *sc2)  C  278 :
+            break;  C  279 :
+   return(sc1 - s1);  C  280 :
+}  C  281 :
+/* standard template:  C  282 :
+   char *strstr(const char *s1, const char *s2);  C  283 :
+   Locates first occurence of character sequence s2 in s1;  C  284 :
+   returns 0 if s2 is empty string  C  285 :
+  C  286 :
+   Uncomment #define FASTER_BUT_MORE_ROM at the top of the  C  287 :
+   file to use the faster algorithm */  C  288 :
+char *strstr(char *s1, char *s2)  C  289 :
+{  C  290 :
+	char *s, *t;  C  291 :
+  C  292 :
+   #ifdef FASTER_BUT_MORE_ROM  C  293 :
+   if (*s2 == '\0')  C  294 :
+         return(s1);  C  295 :
+   #endif  C  296 :
+  C  297 :
+	while (*s1)  C  298 :
+   {  C  299 :
+      for(s = s1, t = s2; *t && *s == *t; ++s, ++t);  C  300 :
+  C  301 :
+		if (*t == '\0')  C  302 :
+			return s1;  C  303 :
+      ++s1;  C  304 :
+      #ifdef FASTER_BUT_MORE_ROM  C  305 :
+         while(*s1 != '\0' && *s1 != *s2)  C  306 :
+            ++s1;  C  307 :
+      #endif  C  308 :
+	}  C  309 :
+	return 0;  C  310 :
+}  C  311 :
+  C  312 :
+/* standard template: char *strtok(char *s1, const char *s2).  C  313 :
+  C  314 :
+   Finds next token in s1 delimited by a character from separator  C  315 :
+   string s2 (which can be different from call to call).  First call  C  316 :
+   starts at beginning of s1 searching for first character NOT  C  317 :
+   contained in s2; returns 0 if none is found.  C  318 :
+   If one is found, it is the start of first token (return value).  C  319 :
+   Function then searches from there for a character contained in s2.  C  320 :
+   If none is found, current token extends to end of s1, and subsequent  C  321 :
+   searches for a token will return 0.  If one is found, it is  C  322 :
+   overwritten by '\0', which terminates current token.  Function saves  C  323 :
+   pointer to following character from which next search will start.  C  324 :
+   Each subsequent call, with 0 as first argument, starts searching  C  325 :
+   from saved pointer */  C  326 :
+  C  327 :
+char *strtok(char *s1, char *s2)  C  328 :
+{  C  329 :
+   char *beg, *end;  C  330 :
+   static char *save;  C  331 :
+  C  332 :
+   beg = (s1)?s1: save;  C  333 :
+   beg += strspn(beg, s2);  C  334 :
+   if (*beg == '\0')  C  335 :
+   {  C  336 :
+      *save = ' ';  C  337 :
+      return(0);  C  338 :
+   }  C  339 :
+   end = strpbrk(beg, s2);  C  340 :
+   if (*end != '\0')  C  341 :
+   {  C  342 :
+      *end = '\0';  C  343 :
+      end++;  C  344 :
+   }  C  345 :
+   save = end;  C  346 :
+   return(beg);  C  347 :
+}  C  348 :
+  C  349 :
+/*****************************************************************/  C  350 :
+/*Miscellaneous functions*/  C  351 :
+/* standard template  C  352 :
+maps error number in errnum to an error message string  C  353 :
+Returns: Pointer to string  C  354 :
+*/  C  355 :
+#ifdef _ERRNO  C  356 :
+char * strerror(int errnum)  C  357 :
+{  C  358 :
+char s[15];  C  359 :
+switch( errnum)  C  360 :
+{  C  361 :
+case 0:  C  362 :
+   strcpy(s,"no errors");  C  363 :
+   return s;  C  364 :
+case EDOM :  C  365 :
+   strcpy(s,"domain error");  C  366 :
+   return s;  C  367 :
+case ERANGE:  C  368 :
+   strcpy(s,"range error");  C  369 :
+   return s;  C  370 :
+}  C  371 :
+}  C  372 :
+#ENDIF  C  373 :
+/* standard template: size_t strlen(const char *s).  C  374 :
+   Computes length of s1 (preceding terminating 0) */  C  375 :
+  C  376 :
+int *strlen(char *s)  C  377 :
+{  C  378 :
+   char *sc;  C  379 :
+  C  380 :
+   for (sc = s; *sc != 0; sc++);  C  381 :
+   return(sc - s);  C  382 :
+}  C  383 :
+  C  384 :
+/* standard template: size_t stricmp(const char *s1, const char *s2).  C  385 :
+   Compares s1 to s2 ignoring case (upper vs. lower) */  C  386 :
+  C  387 :
+signed int stricmp(char *s1, char *s2)  C  388 :
+{  C  389 :
+ for(; *s1==*s2||(isalpha(*s1)&&isalpha(*s2)&&(*s1==*s2+32||*s2==*s1+32));  C  390 :
+    s1++, s2++)  C  391 :
+    if (*s1 == '\0')  C  392 :
+       return(0);  C  393 :
+ return((*s1 < *s2) ?-1: 1);  C  394 :
+}  C  395 :
+  C  396 :
+  C  397 :
+/* standard template: char *strlwr(char *s).  C  398 :
+   Replaces uppercase letters by lowercase;  C  399 :
+   returns pointer to new string s */  C  400 :
+  C  401 :
+char *strlwr(char *s)  C  402 :
+{  C  403 :
+   char *p;  C  404 :
+  C  405 :
+   for (p = s; *p != '\0'; p++)  C  406 :
+      if (*p >= 'A' && *p <='Z')  C  407 :
+         *p += 'a' - 'A';  C  408 :
+   return(s);  C  409 :
+}  C  410 :
+  C  411 :
+  C  412 :
+/************************************************************/  C  413 :
+  C  414 :
+  C  415 :
+#endif  C  416 :E
+ C  416 :
+  F  202 :
+div_t div(signed int numer,signed int denom)  F  203 :f375V162V163
+{  F  204 :{414
+   div_t val;  F  205 :V167
+   val.quot = numer / denom;  F  206 :V169V170
+   val.rem = numer - (denom * val.quot);  F  207 :V172V173
+   return (val);  F  208 :
+}  F  209 :}427
+  F  210 :
+ldiv_t ldiv(signed long numer,signed long denom)  F  211 :f378V165V166
+{  F  212 :{428
+   ldiv_t val;  F  213 :V174
+   val.quot = numer / denom;  F  214 :V176V177
+   val.rem = numer - (denom * val.quot);  F  215 :V179V180
+   return (val);  F  216 :
+}  F  217 :}445
+  F  218 :
+float atof(char * s)  F  219 :f360V138
+{  F  220 :{446
+   float pow10 = 1.0;  F  221 :V181
+   float result = 0.0;  F  222 :V182
+   int sign = 0;  F  223 :V183
+   char c;  F  224 :V184
+   int ptr = 0;  F  225 :V185
+  F  226 :
+   c = s[ptr++];  F  227 :
+  F  228 :
+   if ((c>='0' && c<='9') || c=='+' || c=='-' || c=='.') {  F  229 :
+      if(c == '-') {  F  230 :{458
+         sign = 1;  F  231 :{461
+         c = s[ptr++];  F  232 :
+      }  F  233 :}462
+      if(c == '+')  F  234 :
+         c = s[ptr++];  F  235 :
+  F  236 :
+      while((c >= '0' && c <= '9')) {  F  237 :
+         result = 10*result + c - '0';  F  238 :{470V187V188V190V192V193
+         c = s[ptr++];  F  239 :
+      }  F  240 :}538
+  F  241 :
+      if (c == '.') {  F  242 :
+         c = s[ptr++];  F  243 :{541
+         while((c >= '0' && c <= '9')) {  F  244 :
+             pow10 = pow10*10;  F  245 :{547
+             result += (c - '0')/pow10;  F  246 :V195V196
+             c = s[ptr++];  F  247 :
+         }  F  248 :}573
+      }  F  249 :}574
+  F  250 :
+   }  F  251 :}575
+  F  252 :
+   if (sign == 1)  F  253 :
+      result = -1*result;  F  254 :
+   return(result);  F  255 :
+}  F  256 :}578
+  F  257 :
+signed int atoi(char *s)  F  258 :f361V140
+{  F  259 :{579
+   signed int result;  F  260 :V197
+   int sign, base, index;  F  261 :V198V199V200
+   char c;  F  262 :V201
+  F  263 :
+   index = 0;  F  264 :
+   sign = 0;  F  265 :
+   base = 10;  F  266 :
+   result = 0;  F  267 :
+  F  268 :
+   if (!s)   F  269 :
+      return 0;  F  270 :
+   // Omit all preceeding alpha characters  F  271 :
+   c = s[index++];  F  272 :
+  F  273 :
+   // increase index if either positive or negative sign is detected  F  274 :
+   if (c == '-')  F  275 :
+   {  F  276 :
+      sign = 1;         // Set the sign to negative  F  277 :{585
+      c = s[index++];  F  278 :
+   }  F  279 :}586
+   else if (c == '+')  F  280 :
+   {  F  281 :
+      c = s[index++];  F  282 :{590
+   }  F  283 :}591
+  F  284 :
+   if (c >= '0' && c <= '9')  F  285 :
+   {  F  286 :
+  F  287 :
+      // Check for hexa number  F  288 :
+      if (c == '0' && (s[index] == 'x' || s[index] == 'X'))  F  289 :{596
+      {  F  290 :
+         base = 16;  F  291 :{603
+         index++;  F  292 :
+         c = s[index++];  F  293 :
+      }  F  294 :}604
+  F  295 :
+      // The number is a decimal number  F  296 :
+      if (base == 10)  F  297 :
+      {  F  298 :
+         while (c >= '0' && c <= '9')  F  299 :{607
+         {  F  300 :
+            result = 10*result + (c - '0');  F  301 :{613
+            c = s[index++];  F  302 :
+         }  F  303 :}614
+      }  F  304 :}615
+      else if (base == 16)    // The number is a hexa number  F  305 :
+      {  F  306 :
+         c = toupper(c);  F  307 :{619
+         while ( (c >= '0' && c <= '9') || (c >= 'A' && c<='F'))  F  308 :
+         {  F  309 :
+            if (c >= '0' && c <= '9')  F  310 :{633
+               result = (result << 4) + (c - '0');  F  311 :
+            else  F  312 :
+               result = (result << 4) + (c - 'A' + 10);  F  313 :
+  F  314 :
+            c = s[index++];  F  315 :
+            c = toupper(c);  F  316 :
+         }  F  317 :}643
+      }  F  318 :}644
+   }  F  319 :}645
+  F  320 :
+   if (sign == 1 && base == 10)  F  321 :
+       result = -result;  F  322 :
+  F  323 :
+   return(result);  F  324 :
+}  F  325 :}650
+  F  326 :
+signed long atol(char *s)  F  327 :f363V144
+{  F  328 :{651
+   signed long result;  F  329 :V202
+   int sign, base, index;  F  330 :V203V204V205
+   char c;  F  331 :V206
+  F  332 :
+   index = 0;  F  333 :
+   sign = 0;  F  334 :
+   base = 10;  F  335 :
+   result = 0;  F  336 :
+  F  337 :
+   if (!s)   F  338 :
+      return 0;  F  339 :
+   c = s[index++];  F  340 :
+  F  341 :
+   // increase index if either positive or negative sign is detected  F  342 :
+   if (c == '-')  F  343 :
+   {  F  344 :
+      sign = 1;         // Set the sign to negative  F  345 :{657
+      c = s[index++];  F  346 :
+   }  F  347 :}658
+   else if (c == '+')  F  348 :
+   {  F  349 :
+      c = s[index++];  F  350 :{662
+   }  F  351 :}663
+  F  352 :
+   if (c >= '0' && c <= '9')  F  353 :
+   {  F  354 :
+      if (c == '0' && (s[index] == 'x' || s[index] == 'X'))  F  355 :{668
+      {  F  356 :
+         base = 16;  F  357 :{675
+         index++;  F  358 :
+         c = s[index++];  F  359 :
+      }  F  360 :}676
+  F  361 :
+      // The number is a decimal number  F  362 :
+      if (base == 10)  F  363 :
+      {  F  364 :
+         while (c >= '0' && c <= '9')  F  365 :{679
+         {  F  366 :
+            result = 10*result + (c - '0');  F  367 :{685
+            c = s[index++];  F  368 :
+         }  F  369 :}686
+      }  F  370 :}687
+      else if (base == 16)    // The number is a hexa number  F  371 :
+      {  F  372 :
+         c = toupper(c);  F  373 :{691
+         while ( (c >= '0' && c <= '9') || (c >= 'A' && c <='F'))  F  374 :
+         {  F  375 :
+            if (c >= '0' && c <= '9')  F  376 :{705
+               result = (result << 4) + (c - '0');  F  377 :
+            else  F  378 :
+               result = (result << 4) + (c - 'A' + 10);  F  379 :
+  F  380 :
+            c = s[index++];c = toupper(c);  F  381 :
+         }  F  382 :}715
+      }  F  383 :}716
+   }  F  384 :}717
+  F  385 :
+   if (base == 10 && sign == 1)  F  386 :
+      result = -result;  F  387 :
+  F  388 :
+   return(result);  F  389 :
+}  F  390 :}722
+  F  391 :
+/* A fast routine to multiply by 10  F  392 :
+ */  F  393 :
+signed int32 mult_with10(int32 num)  F  394 :f393V208
+{  F  395 :{724
+   return ( (num << 1) + (num << 3) );  F  396 :
+}  F  397 :}726
+  F  398 :
+signed int32 atoi32(char *s)  F  399 :f362V142
+{  F  400 :{727
+   signed int32 result;  F  401 :V209
+   int sign, base, index;  F  402 :V210V211V212
+   char c;  F  403 :V213
+  F  404 :
+   index = 0;  F  405 :
+   sign = 0;  F  406 :
+   base = 10;  F  407 :
+   result = 0;  F  408 :
+  F  409 :
+   if (!s)   F  410 :
+      return 0;  F  411 :
+   c = s[index++];  F  412 :
+  F  413 :
+   // increase index if either positive or negative sign is detected  F  414 :
+   if (c == '-')  F  415 :
+   {  F  416 :
+      sign = 1;         // Set the sign to negative  F  417 :{733
+      c = s[index++];  F  418 :
+   }  F  419 :}734
+   else if (c == '+')  F  420 :
+   {  F  421 :
+      c = s[index++];  F  422 :{738
+   }  F  423 :}739
+  F  424 :
+   if (c >= '0' && c <= '9')  F  425 :
+   {  F  426 :
+      if (c == '0' && (s[index] == 'x' || s[index] == 'X'))  F  427 :{744
+      {  F  428 :
+         base = 16;  F  429 :{751
+         index++;  F  430 :
+         c = s[index++];  F  431 :
+      }  F  432 :}752
+  F  433 :
+      // The number is a decimal number  F  434 :
+      if (base == 10)  F  435 :
+      {  F  436 :
+         while (c >= '0' && c <= '9') {  F  437 :{755
+            result = (result << 1) + (result << 3);  // result *= 10;  F  438 :{761
+            result += (c - '0');  F  439 :
+            c = s[index++];  F  440 :
+         }  F  441 :}762
+      }  F  442 :}763
+      else if (base == 16)    // The number is a hexa number  F  443 :
+      {  F  444 :
+         c = toupper(c);  F  445 :{767
+         while ((c >= '0' && c <= '9') || (c >= 'A' && c <='F'))  F  446 :
+         {  F  447 :
+            if (c >= '0' && c <= '9')  F  448 :{781
+               result = (result << 4) + (c - '0');  F  449 :
+            else  F  450 :
+               result = (result << 4) + (c - 'A' + 10);  F  451 :
+  F  452 :
+            c = s[index++];c = toupper(c);  F  453 :
+         }  F  454 :}791
+      }  F  455 :}792
+   }  F  456 :}793
+  F  457 :
+   if (base == 10 && sign == 1)  F  458 :
+      result = -result;  F  459 :
+  F  460 :
+   return(result);  F  461 :
+}  F  462 :}798
+  F  463 :
+float strtod(char *s,char *endptr) {  F  464 :f364V146V147{799
+   float pow10 = 1.0;  F  465 :V214
+   float result = 0.0;  F  466 :V215
+   int sign = 0, point = 0;  F  467 :V216V217
+   char c;  F  468 :V218
+   int ptr = 0;  F  469 :V219
+  F  470 :
+   if (!s)   F  471 :
+      return 0;  F  472 :
+   c=s[ptr++];  F  473 :
+     F  474 :
+  F  475 :
+   while((c>='0' && c<='9') || c=='+' || c=='-' || c=='.') {  F  476 :
+      if(c == '-') {  F  477 :{814
+         sign = 1;  F  478 :{817
+         c = s[ptr++];  F  479 :
+      }  F  480 :}818
+  F  481 :
+      while((c >= '0' && c <= '9') && point == 0) {  F  482 :
+         result = 10*result + c - '0';  F  483 :{826
+         c = s[ptr++];  F  484 :
+      }  F  485 :}827
+  F  486 :
+      if (c == '.') {  F  487 :
+         point = 1;  F  488 :{830
+         c = s[ptr++];  F  489 :
+      }  F  490 :}831
+  F  491 :
+      while((c >= '0' && c <= '9') && point == 1) {  F  492 :
+         pow10 = pow10*10;  F  493 :{839
+         result += (c - '0')/pow10;  F  494 :
+         c = s[ptr++];  F  495 :
+      }  F  496 :}840
+  F  497 :
+      if (c == '+') {  F  498 :
+         c = s[ptr++];  F  499 :{843
+      }  F  500 :}844
+   }  F  501 :}845
+  F  502 :
+   if (sign == 1)  F  503 :
+      result = -1*result;  F  504 :
+   if(endptr)  F  505 :
+   {  F  506 :
+      if (ptr) {  F  507 :{850
+         ptr--;  F  508 :{853
+         *((char *)endptr)=s+ptr;  F  509 :
+      }  F  510 :}854
+      else  F  511 :
+         *((char *)endptr)=s;  F  512 :
+   }  F  513 :}856
+  F  514 :
+   return(result);  F  515 :
+}  F  516 :}857
+  F  517 :
+long strtoul(char *s,char *endptr,signed int base)  F  518 :f368V153V154V155
+{  F  519 :{858
+   char *sc,*s1,*sd;  F  520 :V220V221V222
+   unsigned long x=0;  F  521 :V223
+   char sign;  F  522 :V224
+   char digits[]="0123456789abcdefghijklmnopqstuvwxyz";  F  523 :V225
+   for(sc=s;isspace(*sc);++sc);  F  524 :
+   sign=*sc=='-'||*sc=='+'?sc++:'+';  F  525 :
+   if(sign=='-')  F  526 :
+   {  F  527 :
+      if (endptr)  F  528 :{873
+      {  F  529 :
+        *((char *)endptr)=s;  F  530 :{876
+      }  F  531 :}877
+      return 0;  F  532 :
+   }  F  533 :}878
+  F  534 :
+   if (base <0 || base ==1|| base >36) // invalid base  F  535 :
+   {  F  536 :
+      if (endptr)  F  537 :{885
+      {  F  538 :
+        *((char *)endptr)=s;  F  539 :{888
+      }  F  540 :}889
+      return 0;  F  541 :
+   }  F  542 :}890
+   else if (base)  F  543 :
+   {  F  544 :
+      if(base==16 && *sc =='0'&&(sc[1]=='x' || sc[1]=='X'))  F  545 :{894
+         sc+=2;  F  546 :
+      if(base==8 && *sc =='0')  F  547 :
+         sc+=1;  F  548 :
+      if(base==2 && *sc =='0'&&sc[1]=='b')  F  549 :
+         sc+=2;  F  550 :
+  F  551 :
+   }  F  552 :}913
+   else if(*sc!='0') // base is 0, find base  F  553 :
+      base=10;  F  554 :
+   else if (sc[1]=='x' || sc[1]=='X')  F  555 :
+      base =16,sc+=2;  F  556 :
+   else if(sc[1]=='b')  F  557 :
+      base=2,sc+=2;  F  558 :
+   else  F  559 :
+      base=8;  F  560 :
+   for (s1=sc;*sc=='0';++sc);// skip leading zeroes  F  561 :
+   sd=memchr(digits,tolower(*sc),base);  F  562 :
+   for(; sd!=0; )  F  563 :
+   {  F  564 :
+      x=x*base+(int16)(sd-digits);  F  565 :{942
+      ++sc;  F  566 :
+      sd=memchr(digits,tolower(*sc),base);  F  567 :
+   }  F  568 :}947
+   if(s1==sc)  F  569 :
+   {  F  570 :
+      if (endptr)  F  571 :{950
+      {  F  572 :
+        *((char *)endptr)=s;  F  573 :{953
+      }  F  574 :}954
+   return 0;  F  575 :
+   }  F  576 :}955
+   if (endptr)  F  577 :
+        *((char *)endptr)=sc;  F  578 :
+   return x;  F  579 :
+}  F  580 :}958
+  F  581 :
+  F  582 :
+signed long strtol(char *s,char *endptr,signed int base)  F  583 :f366V149V150V151
+{  F  584 :{959
+   char *sc,*s1,*sd;  F  585 :V226V227V228
+   signed long x=0;  F  586 :V229
+   char sign;  F  587 :V230
+   char digits[]="0123456789abcdefghijklmnopqstuvwxyz";  F  588 :V231
+   for(sc=s;isspace(*sc);++sc);  F  589 :
+   sign=*sc=='-'||*sc=='+'?sc++:'+';  F  590 :
+   if (base <0 || base ==1|| base >36) // invalid base  F  591 :
+   {  F  592 :
+      if (endptr)  F  593 :{978
+      {  F  594 :
+        *((char *)endptr)=s;  F  595 :{981
+      }  F  596 :}982
+      return 0;  F  597 :
+   }  F  598 :}983
+   else if (base)  F  599 :
+   {  F  600 :
+      if(base==16 && *sc =='0'&&(sc[1]=='x' || sc[1]=='X'))  F  601 :{987
+         sc+=2;  F  602 :
+      if(base==8 && *sc =='0')  F  603 :
+         sc+=1;  F  604 :
+      if(base==2 && *sc =='0'&&sc[1]=='b')  F  605 :
+         sc+=2;  F  606 :
+  F  607 :
+   }  F  608 :}1006
+   else if(*sc!='0') // base is 0, find base  F  609 :
+      base=10;  F  610 :
+   else if (sc[1]=='x' || sc[1]=='X')  F  611 :
+      base =16,sc+=2;  F  612 :
+   else if(sc[1]=='b')  F  613 :
+      base=2,sc+=2;  F  614 :
+   else  F  615 :
+      base=8;  F  616 :
+   for (s1=sc;*sc=='0';++sc);// skip leading zeroes  F  617 :
+  F  618 :
+   sd=memchr(digits,tolower(*sc),base);  F  619 :
+   for(;sd!=0;)  F  620 :
+   {  F  621 :
+      x=x*base+(int16)(sd-digits);  F  622 :{1035
+      ++sc;  F  623 :
+      sd=memchr(digits,tolower(*sc),base);  F  624 :
+   }  F  625 :}1040
+   if(s1==sc)  F  626 :
+   {  F  627 :
+      if (endptr)  F  628 :{1043
+      {  F  629 :
+        *((char *)endptr)=s;  F  630 :{1046
+      }  F  631 :}1047
+   return 0;  F  632 :
+   }  F  633 :}1048
+   if(sign=='-')  F  634 :
+      x  =-x;  F  635 :
+   if (endptr)  F  636 :
+        *((char *)endptr)=sc;  F  637 :
+   return x;  F  638 :
+}  F  639 :}1053
+  F  640 :
+signed int system(char *string)  F  641 :f372V160
+{  F  642 :{1054
+   return 0;  F  643 :
+}  F  644 :}1056
+  F  645 :
+int mblen(char *s,size_t n)  F  646 :f399V233V234
+{  F  647 :{1058
+   return strlen(s);  F  648 :
+}  F  649 :}1060
+  F  650 :
+int mbtowc(wchar_t *pwc,char *s,size_t n)  F  651 :f400V236V237V238
+{  F  652 :{1062
+   *pwc=*s;  F  653 :
+   return 1;  F  654 :
+}  F  655 :}1064
+  F  656 :
+int wctomb(char *s,wchar_t wchar)  F  657 :f402V240V241
+{  F  658 :{1066
+   *s=wchar;  F  659 :
+   return 1;  F  660 :
+}  F  661 :}1068
+  F  662 :
+size_t mbstowcs(wchar_t *pwcs,char *s,size_t n)  F  663 :f404V243V244V245
+{  F  664 :{1070
+   strncpy(pwcs,s,n);  F  665 :
+   return strlen(pwcs);  F  666 :
+}  F  667 :}1072
+  F  668 :
+size_t wcstombs(char *s,wchar_t *pwcs,size_t n)  F  669 :f406V247V248V249
+{  F  670 :{1074
+   strncpy(s,pwcs,n);  F  671 :
+   return strlen(s);  F  672 :
+}  F  673 :}1076
+  F  674 :
+//---------------------------------------------------------------------------  F  675 :
+// The random number implementation  F  676 :
+//---------------------------------------------------------------------------  F  677 :
+  F  678 :
+unsigned int32 _Randseed = 1;  F  679 :V250
+  F  680 :
+long rand(void)  F  681 :f369
+{  F  682 :{1077
+   _Randseed = _Randseed * 1103515245 + 12345;  F  683 :V252V253
+   return ((unsigned long)(_Randseed >> 16) % RAND_MAX);  F  684 :V255V256
+}  F  685 :}1094
+  F  686 :
+void srand(unsigned int32 seed)  F  687 :f370V158
+{  F  688 :{1095
+   _Randseed = seed;  F  689 :
+}  F  690 :}1097
+  F  691 :
+//---------------------------------------------------------------------------  F  692 :
+// Searching and sorting utilities implementation  F  693 :
+//---------------------------------------------------------------------------  F  694 :
+  F  695 :
+typedef signed int (*_Cmpfun)(char * p1,char * p2);  F  696 :f411V258V259P411
+  F  697 :
+void qsort(char * qdata, int qitems, int qsize, _Cmpfun cmp) {  F  698 :f414V262V263V264V265{1101
+   int m,j,i,l;  F  699 :V266V267V268V269
+   short done;  F  700 :V270
+   BYTE t[16];  F  701 :V271
+  F  702 :
+   m = qitems/2;  F  703 :
+   while( m > 0 ) {  F  704 :
+     for(j=0; j<(qitems-m); ++j) {  F  705 :{1106
+        i = j;  F  706 :{1113
+        do  F  707 :
+        {  F  708 :
+           done=TRUE;  F  709 :{1117
+           l = i+m;  F  710 :
+           if( (*cmp)(qdata+i*qsize, qdata+l*qsize) > 0 ) {  F  711 :
+              memcpy(t, qdata+i*qsize, qsize);  F  712 :{1121
+              memcpy(qdata+i*qsize, qdata+l*qsize, qsize);  F  713 :
+              memcpy(qdata+l*qsize, t, qsize);  F  714 :
+              if(m <= i)  F  715 :
+                i -= m;  F  716 :
+                done = FALSE;  F  717 :
+           }  F  718 :}1130
+        } while(!done);  F  719 :}1131
+     }  F  720 :}1134
+     m = m/2;  F  721 :
+   }  F  722 :}1135
+}  F  723 :}1136
+  F  724 :
+  F  725 :
+char *bsearch(char *key, char *base, size_t num, size_t width,_Cmpfun cmp)  F  726 :f425V274V275V276V277V278
+{  F  727 :{1138
+   char *p, *q;  F  728 :V279V280
+   size_t n;  F  729 :V281
+   size_t pivot;  F  730 :V282
+   signed int val;  F  731 :V283
+  F  732 :
+   p = base;  F  733 :
+   n = num;  F  734 :
+  F  735 :
+   while (n > 0)  F  736 :
+   {  F  737 :
+      pivot = n >> 1;  F  738 :{1143
+      q = p + width * pivot;  F  739 :
+  F  740 :
+      val = (*cmp)(key, q);  F  741 :
+  F  742 :
+      if (val < 0)  F  743 :
+         n = pivot;  F  744 :
+      else if (val == 0)  F  745 :
+         return ((char *)q);  F  746 :
+      else {  F  747 :
+         p = q + width;  F  748 :{1150
+         n -= pivot + 1;  F  749 :
+      }  F  750 :}1151
+   }  F  751 :}1152
+  F  752 :
+   return NULL;      // There's no match  F  753 :
+}  F  754 :}1153
+  F  755 :
+  F  756 :
+#endif  F  757 :E
+ F  757 :
+  A   18 :
+#define LED1 PIN_A0  A   19 :
+#define LED2 PIN_A1  A   20 :
+  A   21 :
+#define SW1 PIN_A2  A   22 :
+#define SW2 PIN_A3  A   23 :
+#define SW3 PIN_A4  A   24 :
+  A   25 :
+#define BLANK PIN_B5  A   26 :
+#define CLOCK PIN_B2  A   27 :
+#define DATA PIN_B1  A   28 :
+#define STROBE PIN_B4  A   29 :
+  A   30 :
+#define TEXTBUFFER_LENGTH 30  A   31 :
+#define TEXTBUFFER_LAST 29  A   32 :
+  A   33 :
+  A   34 :
+/**********************************************************  A   35 :
+/ Serial Input Buffer  A   36 :
+/**********************************************************/  A   37 :
+  A   38 :
+#define SERIAL_BUFFER_LENGTH 32  A   39 :
+char serialbuffer[SERIAL_BUFFER_LENGTH];  A   40 :V284
+unsigned int8 serialbufferptr = 0;  A   41 :V285
+int1 serialreceived = 0;  A   42 :V286
+int1 doecho = 1;  A   43 :V287
+     A   44 :
+#INT_RDA  A   45 :
+void serial_isr() {  A   46 :f446{1155
+   BYTE c;  A   47 :V289
+   c = toupper(fgetc(terminal));  A   48 :
+   if (doecho) fputc(c,terminal);  A   49 :
+   if (!serialreceived) {  A   50 :
+    if (c == 13)  {  A   51 :{1166
+     serialbuffer[serialbufferptr] = 0;  A   52 :{1169
+     serialreceived = 1;  A   53 :
+     serialbufferptr = 0;  A   54 :
+    } else {  A   55 :}1170
+     serialbuffer[serialbufferptr] = c;  A   56 :{1172
+     if (serialbufferptr < SERIAL_BUFFER_LENGTH) serialbufferptr++;  A   57 :
+    }  A   58 :}1175
+   }  A   59 :}1176
+}  A   60 :}1177
+  A   61 :
+char ackdata[30] = "";  A   62 :V290
+  A   63 :
+void command_ack(int1 error)  A   64 :f448V292
+{  A   65 :{1179
+  if (error) {  A   66 :
+   fprintf(terminal,"ER %S\n",ackdata);  A   67 :{1183
+  } else {  A   68 :}1194
+   fprintf(terminal,"OK %S\n",ackdata);  A   69 :{1196
+  }  A   70 :}1207
+  ackdata[0] = 0;  A   71 :
+}  A   72 :}1208
+  A   73 :
+/**********************************************************  A   74 :
+/ Config / EEPROM  A   75 :
+/**********************************************************/  A   76 :
+  A   77 :
+#define MYMAGICNUMBER 49  A   78 :
+  A   79 :
+#define EFFECT_NONE 0  A   80 :
+#define EFFECT_ROLL_RIGHT 1  A   81 :
+#define EFFECT_ROLL_LEFT 2  A   82 :
+#define EFFECT_WALK_RIGHT 3  A   83 :
+#define EFFECT_WALK_LEFT 4  A   84 :
+  A   85 :
+struct config_struct {  A   86 :T295
+ unsigned int8 magicnumber;  A   87 :
+ unsigned int1 state_led1;  A   88 :
+ unsigned int1 state_led2;  A   89 :
+ unsigned int1 autoscroll;  A   90 :
+ unsigned int8 active_storage;  A   91 :
+ unsigned int8 scroll_delay;  A   92 :
+ unsigned int8 effect;  A   93 :
+ char textstorage[3][TEXTBUFFER_LENGTH];  A   94 :
+} config;  A   95 :V305
+  A   96 :
+void write_eeprom_block(unsigned int16 address, unsigned int8 size, unsigned int8 *ptr)  A   97 :f468V307V308V309
+{  A   98 :{1210
+  unsigned int8 i;  A   99 :V310
+  output_high(BLANK);  A  100 :
+  for (i=0;i<size;i++) {  A  101 :
+   write_eeprom(address+i,*(ptr+i));  A  102 :{1218
+//   fprintf(terminal,"WR %u to %lu\n\r",*(ptr+i), address+i);  A  103 :
+  }    A  104 :}1220
+  output_low(BLANK);  A  105 :
+}  A  106 :}1221
+  A  107 :
+void read_eeprom_block(unsigned int16 address, unsigned int8 size, unsigned int8 *ptr)  A  108 :f471V312V313V314
+{  A  109 :{1223
+  unsigned int8 i;  A  110 :V315
+  for (i=0;i<size;i++) {  A  111 :
+   *(ptr+i) = read_eeprom(address+i);  A  112 :{1231
+//   fprintf(terminal,"RD %u from %lu\n\r",*(ptr+i), address+i);  A  113 :
+  }    A  114 :}1232
+}  A  115 :}1233
+  A  116 :
+void read_config()  A  117 :f472
+{  A  118 :{1235
+  read_eeprom_block(1,sizeof(config_struct),&config);  A  119 :
+  if (config.magicnumber != MYMAGICNUMBER) {  A  120 :
+   //fprintf(terminal,"Init config, size %u\n\r",sizeof(config_struct));  A  121 :
+   memset(&config,0,sizeof(config_struct));  A  122 :{1239
+   config.magicnumber = MYMAGICNUMBER;  A  123 :
+   config.state_led1 = 0;  A  124 :
+   config.state_led2 = 0;  A  125 :
+   config.autoscroll = 1;  A  126 :
+   config.active_storage = 0;  A  127 :
+   config.scroll_delay = 13;  A  128 :
+   config.effect = EFFECT_NONE;  A  129 :
+   strcpy(config.textstorage[0],"DICKTIER");  A  130 :
+   strcpy(config.textstorage[1],"HARALD DAS LUSTIGE ERDFERKEL");  A  131 :
+   strcpy(config.textstorage[2],"DINGDONG 2000");  A  132 :
+   write_eeprom_block(1,sizeof(config_struct),&config);  A  133 :
+  }  A  134 :}1256
+}  A  135 :}1257
+  A  136 :
+void write_config()  A  137 :f476
+{  A  138 :{1259
+   write_eeprom_block(1,sizeof(config_struct),&config);  A  139 :
+}  A  140 :}1261
+  A  141 :
+  A  142 :
+  A  143 :
+/**********************************************************  A  144 :
+/ VFD  A  145 :
+/**********************************************************/  A  146 :
+  A  147 :
+#define GRIDS 11  A  148 :
+#define ANODES 17  A  149 :
+  A  150 :
+unsigned int16 vfd_bitbuffer[GRIDS];  A  151 :V321
+  A  152 :
+// 11G  A  153 :
+#define PLAY_FWD 0x1   A  154 :
+#define PLAY_REV 0x2   A  155 :
+//10G  A  156 :
+#define DOLBY 0x1  A  157 :
+//9G  A  158 :
+#define DOLBY_C 0x1  A  159 :
+#define DOLBY_B 0x2  A  160 :
+//7G  A  161 :
+#define S11 0x1  A  162 :
+#define S12 0x2  A  163 :
+#define CO 0x1  A  164 :
+//6G  A  165 :
+#define S9 0x1  A  166 :
+#define S10 0x2  A  167 :
+//5G  A  168 :
+#define S7 0x1  A  169 :
+#define S8 0x2  A  170 :
+//4G  A  171 :
+#define S5 0x1  A  172 :
+#define S6 0x2  A  173 :
+//3G  A  174 :
+#define S3 0x1  A  175 :
+#define S4 0x2  A  176 :
+//2G  A  177 :
+#define S1 0x1  A  178 :
+#define S2 0x2  A  179 :
+//1G  A  180 :
+#define DCC P11  A  181 :
+#define AUTOREVERSE_FWD P12  A  182 :
+#define AUTOREVERSE_REV P13  A  183 :
+#define AUTOREVERSE_BRK_OPEN P14  A  184 :
+#define AUTOREVERSE_BRK_CLOSE P15  A  185 :
+#define ANALOG P16  A  186 :
+#define DIGITAL 0x1  A  187 :
+  A  188 :
+#define P3  (int16)0b0000000000000001  A  189 :
+#define P4  (int16)0b0000000000000010  A  190 :
+#define P5  (int16)0b0000000000000100  A  191 :
+#define P6  (int16)0b0000000000001000  A  192 :
+#define P7  (int16)0b0000000000010000  A  193 :
+#define P8  (int16)0b0000000000100000  A  194 :
+#define P9  (int16)0b0000000001000000  A  195 :
+#define P10 (int16)0b0000000010000000  A  196 :
+#define P11 (int16)0b0000000100000000  A  197 :
+#define P12 (int16)0b0000001000000000  A  198 :
+#define P13 (int16)0b0000010000000000  A  199 :
+#define P14 (int16)0b0000100000000000  A  200 :
+#define P15 (int16)0b0001000000000000  A  201 :
+#define P16 (int16)0b0010000000000000  A  202 :
+#define P17 (int16)0b0100000000000000  A  203 :
+  A  204 :
+#define SEG_a P3  A  205 :
+#define SEG_b P4  A  206 :
+#define SEG_c P14  A  207 :
+#define SEG_d P16  A  208 :
+#define SEG_e P15  A  209 :
+#define SEG_f P5  A  210 :
+#define SEG_g P10  A  211 :
+#define SEG_h P8  A  212 :
+#define SEG_j P7  A  213 :
+#define SEG_k P6  A  214 :
+#define SEG_m P9  A  215 :
+#define SEG_n P11  A  216 :
+#define SEG_p P12  A  217 :
+#define SEG_r P13  A  218 :
+  A  219 :
+int16 encode_ascii(char code)  A  220 :f532V323
+{   A  221 :{1263
+  switch (code)  {  A  222 :
+    case '0': return (int16)(SEG_a | SEG_b | SEG_c | SEG_d | SEG_e | SEG_f | SEG_k | SEG_r);  A  223 :
+    case '1': return (int16)(SEG_b | SEG_c);  A  224 :
+    case '2': return (int16)(SEG_a | SEG_b | SEG_d | SEG_e | SEG_g | SEG_m);  A  225 :
+    case '3': return (int16)(SEG_a | SEG_b | SEG_c | SEG_d | SEG_m);  A  226 :
+    case '4': return (int16)(SEG_b | SEG_c | SEG_f | SEG_g | SEG_m);  A  227 :
+    case '5': return (int16)(SEG_a | SEG_c | SEG_d | SEG_f | SEG_g | SEG_m);  A  228 :
+    case '6': return (int16)(SEG_a | SEG_c | SEG_d | SEG_e | SEG_f | SEG_g | SEG_m);  A  229 :
+    case '7': return (int16)(SEG_a | SEG_b | SEG_c);  A  230 :
+    case '8': return (int16)(SEG_a | SEG_b | SEG_c | SEG_d | SEG_e | SEG_f | SEG_g | SEG_m);  A  231 :
+    case '9': return (int16)(SEG_a | SEG_b | SEG_c | SEG_d | SEG_f | SEG_g | SEG_m);  A  232 :
+    case 'A': return (int16)(SEG_a | SEG_b | SEG_c | SEG_e | SEG_f | SEG_g | SEG_m);  A  233 :
+    case 'B': return (int16)(SEG_a | SEG_b | SEG_c | SEG_d | SEG_j | SEG_p | SEG_m);  A  234 :
+    case 'C': return (int16)(SEG_a | SEG_d | SEG_e | SEG_f);  A  235 :
+    case 'D': return (int16)(SEG_a | SEG_b | SEG_c | SEG_d | SEG_j | SEG_p);  A  236 :
+    case 'E': return (int16)(SEG_a | SEG_d | SEG_e | SEG_f | SEG_g | SEG_m);  A  237 :
+    case 'F': return (int16)(SEG_a | SEG_e | SEG_f | SEG_g);  A  238 :
+    case 'G': return (int16)(SEG_a | SEG_c | SEG_d | SEG_e | SEG_f | SEG_m);  A  239 :
+    case 'H': return (int16)(SEG_b | SEG_c | SEG_e | SEG_f | SEG_g | SEG_m);  A  240 :
+    case 'I': return (int16)(SEG_j | SEG_p);  A  241 :
+    case 'J': return (int16)(SEG_b | SEG_c | SEG_d | SEG_e);  A  242 :
+    case 'K': return (int16)(SEG_e | SEG_f | SEG_g | SEG_k | SEG_n);  A  243 :
+    case 'L': return (int16)(SEG_d | SEG_e | SEG_f);  A  244 :
+    case 'M': return (int16)(SEG_b | SEG_c | SEG_e | SEG_f | SEG_h | SEG_k);  A  245 :
+    case 'N': return (int16)(SEG_b | SEG_c | SEG_e | SEG_f | SEG_h | SEG_n);  A  246 :
+    case 'O': return (int16)(SEG_a | SEG_b | SEG_c | SEG_d | SEG_e | SEG_f);  A  247 :
+    case 'P': return (int16)(SEG_a | SEG_b | SEG_e | SEG_f | SEG_g | SEG_m);  A  248 :
+    case 'Q': return (int16)(SEG_a | SEG_b | SEG_c | SEG_d | SEG_e | SEG_f | SEG_n);  A  249 :
+    case 'R': return (int16)(SEG_a | SEG_b | SEG_e | SEG_f | SEG_g | SEG_m | SEG_n);  A  250 :
+    case 'S': return (int16)(SEG_a | SEG_c | SEG_d | SEG_f | SEG_g | SEG_m);  A  251 :
+    case 'T': return (int16)(SEG_a | SEG_j | SEG_p);  A  252 :
+    case 'U': return (int16)(SEG_b | SEG_c | SEG_d | SEG_e | SEG_f);  A  253 :
+    case 'V': return (int16)(SEG_e | SEG_f | SEG_k | SEG_r);  A  254 :
+    case 'W': return (int16)(SEG_b | SEG_c | SEG_e | SEG_f | SEG_n | SEG_r);  A  255 :
+    case 'X': return (int16)(SEG_h | SEG_k | SEG_n | SEG_r);  A  256 :
+    case 'Y': return (int16)(SEG_h | SEG_k | SEG_p);  A  257 :
+    case 'Z': return (int16)(SEG_a | SEG_d | SEG_k | SEG_r);  A  258 :
+    case '+': return (int16)(SEG_g | SEG_j | SEG_m | SEG_p);  A  259 :
+    case '-': return (int16)(SEG_g | SEG_m);  A  260 :
+    case '*': return (int16)(SEG_g | SEG_h | SEG_j | SEG_k | SEG_m | SEG_n | SEG_p | SEG_r);  A  261 :
+    case '_': return (int16)(SEG_d);  A  262 :
+    case '/': return (int16)(SEG_k | SEG_r);  A  263 :
+    case ',': return (int16)(SEG_r);  A  264 :
+    case '\'': return (int16)(SEG_j);  A  265 :
+    case '$': return (int16)(SEG_a | SEG_c | SEG_d | SEG_f | SEG_g | SEG_m | SEG_j | SEG_p);  A  266 :
+  }  A  267 :
+  return 0x0;  A  268 :
+}  A  269 :}1314
+  A  270 :
+void vfd_pushstring(char *str[])  A  271 :f535V326
+{  A  272 :{1316
+  int i;  A  273 :V327
+  int1 end = 0;  A  274 :V328
+  for (i = 0; i < 10; i++) {  A  275 :
+    if (str[i] == 0) end = 1;  A  276 :{1324
+    if (end)  vfd_bitbuffer[10-i] = 0;  A  277 :
+    else vfd_bitbuffer[10-i] = encode_ascii(str[i]);  A  278 :
+  }  A  279 :}1330
+}  A  280 :}1331
+  A  281 :
+void vfd_scroll(int1 right,char nextchar)  A  282 :f537V330V331
+{  A  283 :{1333
+ int i;  A  284 :V332
+ for (i = 10; i > 1; i--) {  A  285 :
+  vfd_bitbuffer[i] = vfd_bitbuffer[i-1];  A  286 :{1341
+ }  A  287 :}1342
+ vfd_bitbuffer[1] = encode_ascii(nextchar);  A  288 :
+}  A  289 :}1343
+  A  290 :
+void vfd_shift_in(int1 parm)  A  291 :f540V334
+{  A  292 :{1345
+  output_bit(DATA,parm);  A  293 :
+  output_high(CLOCK);  A  294 :
+  output_low(CLOCK);  A  295 :
+}  A  296 :}1350
+  A  297 :
+void vfd_strobe(void)  A  298 :f542
+{  A  299 :{1352
+  output_high(STROBE);  A  300 :
+  output_low(STROBE);  A  301 :
+}  A  302 :}1354
+  A  303 :
+  A  304 :
+void vfd_output()  A  305 :f543
+{  A  306 :{1356
+  static unsigned int8 vfd_gate = 0;  A  307 :V337
+  unsigned int8 i;  A  308 :V338
+  unsigned int16 buf;  A  309 :V339
+  A  310 :
+  for (i = 0; i < 11; i++)   A  311 :
+  {  A  312 :
+    if ( i == vfd_gate) vfd_shift_in(1);  A  313 :{1364
+    else vfd_shift_in(0);  A  314 :
+  }  A  315 :}1368
+  A  316 :
+  // P1  A  317 :
+  vfd_shift_in(0);  A  318 :
+  // P2  A  319 :
+  vfd_shift_in(0);  A  320 :
+  A  321 :
+  buf = vfd_bitbuffer[vfd_gate];  A  322 :
+  A  323 :
+  // CHARACTER BITS P3 -> P16  A  324 :
+  for (i = 0; i < 14; i++)   A  325 :
+  {  A  326 :
+    vfd_shift_in( buf & 0x1 );  A  327 :{1375
+    buf = buf >> 1;  A  328 :
+  }  A  329 :}1376
+  A  330 :
+  // P17  A  331 :
+  vfd_shift_in(0);  A  332 :
+  A  333 :
+  // LAST 2 BITS UNUSED  A  334 :
+  vfd_shift_in(0);  A  335 :
+  vfd_shift_in(0);  A  336 :
+  A  337 :
+  vfd_strobe();  A  338 :
+  A  339 :
+  if (vfd_gate == 10) vfd_gate = 0;  A  340 :
+  else  vfd_gate++;  A  341 :
+	  A  342 :
+}  A  343 :}1380
+  A  344 :
+/**********************************************************  A  345 :
+/ FUNCTIONS  A  346 :
+/**********************************************************/  A  347 :
+unsigned int1 overflow = 0;  A  348 :V340
+unsigned int8 scrollcounter = 0;  A  349 :V341
+unsigned int1 scrollnow = 0;  A  350 :V342
+unsigned int8 scrollptr = 0;  A  351 :V343
+unsigned int8 keystate[3] = {0,0,0};  A  352 :V344
+  A  353 :
+#int_timer0  A  354 :
+void RTCC_ISR()  A  355 :f551
+{  A  356 :{1382
+  vfd_output();  A  357 :
+  set_timer0(0);  A  358 :
+}  A  359 :}1384
+  A  360 :
+#int_timer1  A  361 :
+void TIMER1_ISR()  A  362 :f552
+{  A  363 :{1386
+  if (--scrollcounter == 0) {  A  364 :
+   scrollnow = 1;  A  365 :{1390
+   scrollcounter = config.scroll_delay;  A  366 :
+  }  A  367 :}1391
+}  A  368 :}1392
+  A  369 :
+  A  370 :
+void output_leds()  A  371 :f553
+{  A  372 :{1394
+  output_bit(LED1,config.state_led1);  A  373 :
+  output_bit(LED2,config.state_led2);  A  374 :
+}  A  375 :}1402
+  A  376 :
+void display_current_buffer()  A  377 :f554
+{  A  378 :{1404
+  if (strlen(config.textstorage[config.active_storage]) > 10) overflow = 1;  A  379 :
+  else overflow = 0;  A  380 :
+  scrollcounter = config.scroll_delay;  A  381 :
+  scrollptr = 10;  A  382 :
+  vfd_pushstring(config.textstorage[config.active_storage]);  A  383 :
+}  A  384 :}1409
+  A  385 :
+int1 checkrange(unsigned char val, unsigned char maxval)  A  386 :f555V350V351
+{  A  387 :{1411
+  if ( ((val - '0') >= 0) && ( ((val - '0') <= (maxval - '0')) )) return 0;  A  388 :
+  return 1;  A  389 :
+}  A  390 :}1415
+  A  391 :
+/**********************************************************  A  392 :
+/ MAIN  A  393 :
+/**********************************************************/  A  394 :
+  A  395 :
+void main(void)  A  396 :f557
+{  A  397 :{1417
+ // char cchar = 0;  A  398 :
+  A  399 :
+  int8 command;  A  400 :V353
+  int8 subcommand;  A  401 :V354
+  A  402 :
+  set_tris_a(0b00011100);  A  403 :
+  set_tris_b(0b00000000);  A  404 :
+  A  405 :
+  output_a(0xb00000011);  A  406 :
+  A  407 :
+  output_high(BLANK);  A  408 :
+  A  409 :
+  setup_timer_0(RTCC_INTERNAL | RTCC_DIV_32);  A  410 :
+  setup_timer_1(T1_INTERNAL | T1_DIV_BY_1);  A  411 :
+  A  412 :
+  enable_interrupts(INT_TIMER0);  A  413 :
+  enable_interrupts(INT_TIMER1);  A  414 :
+  enable_interrupts(INT_RDA);  A  415 :
+  enable_interrupts(GLOBAL);  A  416 :
+  A  417 :
+  read_config();  A  418 :
+  A  419 :
+  output_leds();  A  420 :
+  A  421 :
+  display_current_buffer();  A  422 :
+  A  423 :
+  vfd_bitbuffer[0] = 0;  A  424 :
+  A  425 :
+  output_low(BLANK);  A  426 :
+  A  427 :
+  for (;;)   A  428 :
+  {  A  429 :
+  A  430 :
+   if (!input(SW1)) {  A  431 :{1424
+    fprintf(terminal,"OKT1\n");  A  432 :{1427
+    config.active_storage = 0;  A  433 :
+    write_config();       A  434 :
+    display_current_buffer();  A  435 :
+   }  A  436 :}1433
+  A  437 :
+   if (!input(SW2)) {  A  438 :
+    fprintf(terminal,"OKT2\n");  A  439 :{1436
+    config.active_storage = 1;  A  440 :
+    write_config();       A  441 :
+    display_current_buffer();  A  442 :
+   }  A  443 :}1442
+  A  444 :
+   if (!input(SW3)) {  A  445 :
+    fprintf(terminal,"OKT3\n");  A  446 :{1445
+    config.active_storage = 2;  A  447 :
+    write_config();       A  448 :
+    display_current_buffer();  A  449 :
+   }  A  450 :}1451
+  A  451 :
+   if (serialreceived)  A  452 :
+   {  A  453 :
+     serialreceived = 0;  A  454 :{1454
+     command = (serialbuffer[0]);  A  455 :
+     subcommand = (serialbuffer[1] - '0');  A  456 :
+  A  457 :
+     if (command == 'L') { // LXY X=0=A0 X=1=A1 Y=0=AUS Y=1=EIN  A  458 :
+      if (checkrange(serialbuffer[1],'2') || checkrange(serialbuffer[2],'1')) command_ack(1);  A  459 :{1457
+      else {  A  460 :
+        if (serialbuffer[1] == '1') config.state_led1 = (serialbuffer[2]-'0');  A  461 :{1463
+        else if (serialbuffer[1] == '2') config.state_led2 = (serialbuffer[2]-'0');  A  462 :
+        sprintf(ackdata,"L%u%c",subcommand,serialbuffer[2]);  A  463 :V360V362V364V365V367V368
+        output_leds();  A  464 :
+        write_config();       A  465 :
+        command_ack(0);  A  466 :
+       }  A  467 :}1493
+     } else if (command == 'T') { // MAXIMAL 10 ZEICHEN DIREKT ANZEIGEN  A  468 :}1494
+       vfd_pushstring(serialbuffer+1);  A  469 :{1498
+       serialbuffer[11] = 0;  A  470 :
+       sprintf(ackdata,"T%s",serialbuffer+1);  A  471 :
+       overflow = 0;  A  472 :
+       command_ack(0);  A  473 :
+     } else if (command == 'Z') { // OXXY XX=ZEICHEN-ID Y=0=AUS Y=1=EIN  A  474 :}1504
+       command_ack(1);  A  475 :{1508
+  A  476 :
+     } else if (command == 'M') { // MAXIMAL 30 ZEICHEN IN GEWÄHLTEN FLASH-SPEICHER ABLEGEN  A  477 :}1509
+       if (subcommand < 3) {  A  478 :{1513
+        if (serialbuffer[2] != 0) {  A  479 :{1516
+         strncpy(config.textstorage[subcommand],serialbuffer+2,TEXTBUFFER_LAST);  A  480 :{1519
+         write_config();       A  481 :
+         if (subcommand == config.active_storage) display_current_buffer();  A  482 :
+        }  A  483 :}1522
+        sprintf(ackdata,"M%u%s",subcommand,config.textstorage[subcommand]);  A  484 :
+        command_ack(0);  A  485 :
+       } else command_ack(1);  A  486 :}1528
+     } else if (command == 'R') { // FULL RESET  A  487 :}1530
+       config.magicnumber = 0;  A  488 :{1534
+       write_config();  A  489 :
+       command_ack(0);  A  490 :
+       reset_cpu();  A  491 :
+     } else if (command == 'S') { // SX 0=SPEICHERTEXT 0 (DEFAULT)   A  492 :}1535
+                                          //    1=SPEICHERTEXT 1  A  493 :
+                                          //    2=SPEICHERTEXT 2  A  494 :
+                                          //    3=AUS/BLANK  A  495 :
+       if (subcommand < 5) {  A  496 :{1539
+        sprintf(ackdata,"S%u",subcommand);  A  497 :{1542
+        if (subcommand < 3) {  A  498 :
+         config.active_storage = subcommand;  A  499 :{1548
+         write_config();  A  500 :
+         display_current_buffer();  A  501 :
+         command_ack(0);  A  502 :
+       } else if (subcommand == 3) {  A  503 :}1549
+         output_high(BLANK);  A  504 :{1553
+         command_ack(0);  A  505 :
+        }  A  506 :}1554
+       } else command_ack(1);  A  507 :}1555
+  A  508 :
+     } else if (command == 'O') { // OXYY X=OPTION YY=WERT  A  509 :}1557
+                                          // OPTION 1 AUTOSCROLL WERT 00/01 AUS/EIN  A  510 :
+                                          // OPTION 2 SCROLLDELAY WERT 01-99 (MS*10)  A  511 :
+                                          // OPTION 3 EFFECT 00-04  A  512 :
+                                          // OPTION 4 ECHO 00/01 AUS/EIN  A  513 :
+                                            A  514 :
+       if (subcommand < 5) {  A  515 :{1561
+        if (subcommand == 1) {  A  516 :{1564
+         if (serialbuffer[3] == '0') config.autoscroll = 0;  A  517 :{1567
+         else if (serialbuffer[3] == '1') config.autoscroll = 1;  A  518 :
+        } else if (subcommand == 2) {  A  519 :}1573
+         config.scroll_delay = atoi(serialbuffer+2);  A  520 :{1577
+        } else if (subcommand == 3) {  A  521 :}1578
+         config.effect = atoi(serialbuffer+2);  A  522 :{1582
+        } else if (subcommand == 4) {  A  523 :}1583
+         if (serialbuffer[3] == '0') doecho  = 0;  A  524 :{1587
+         else if (serialbuffer[3] == '1') doecho = 1;  A  525 :
+        }  A  526 :}1593
+        sprintf(ackdata,"O%u%c%c",subcommand,serialbuffer[2],serialbuffer[3]);  A  527 :
+        write_config();  A  528 :
+        command_ack(0);  A  529 :
+       } else command_ack(1);  A  530 :}1597
+     } else if (command == 'P') { // PX SHIFT IN CHARACTER X  A  531 :}1599
+         vfd_scroll(config.effect,serialbuffer[1]);  A  532 :{1603
+         command_ack(0);  A  533 :
+     } else if (command == 'V') { // PRINT VERSION  A  534 :}1604
+      strcpy(ackdata,"DICKTIERANZEIGEGERAET V1.0");  A  535 :{1608
+      command_ack(0);  A  536 :
+  A  537 :
+     }   A  538 :}1614
+     else   A  539 :
+      command_ack(1);  // KOMMANDO UNBEKANNT  A  540 :
+  A  541 :
+   }  A  542 :}1616
+  A  543 :
+   if (scrollnow)   A  544 :
+   {  A  545 :
+     scrollnow = 0;  A  546 :{1619
+     if (overflow && config.autoscroll)   A  547 :
+     {  A  548 :
+       vfd_scroll(config.effect,config.textstorage[config.active_storage][scrollptr]);  A  549 :{1624
+       if (scrollptr == strlen(config.textstorage[config.active_storage])) scrollptr = 0;  A  550 :
+       else scrollptr++;  A  551 :
+     }  A  552 :}1628
+   }  A  553 :}1629
+  A  554 :
+  A  555 :
+/*  A  556 :
+  A  557 :
+   vfd_pushbuffer(cchar);  A  558 :
+   if (cchar == TEXTLENGTH -10 + 2) cchar = 0;  A  559 :
+   else cchar++;  A  560 :
+*/  A  561 :
+  A  562 :
+  }  A  563 :}1630
+}  A  564 :}1631E
+ A  564 :
+

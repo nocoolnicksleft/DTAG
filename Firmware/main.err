@@ -1,0 +1,4 @@
+>>> Warning 202 "C:\LokaleDaten\picprojects\VFD Multiplex\main.c" Line 14(5,8): Variable never used  rs232_errors
+>>> Warning 202 "C:\LokaleDaten\picprojects\VFD Multiplex\main.c" Line 352(15,23): Variable never used  keystate
+      Memory usage:   ROM=35%      RAM=59% - 63%
+      0 Errors,  2 Warnings.

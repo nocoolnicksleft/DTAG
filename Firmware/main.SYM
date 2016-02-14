@@ -1,0 +1,190 @@
+008     PSP_DATA
+015-016 CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01B-01C CCP_2
+01B     CCP_2_LOW
+01C     CCP_2_HIGH
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028     rs232_errors
+029-02A strtok.save
+02B-02E _Randseed
+02F-04E serialbuffer
+04F     serialbufferptr
+050.0   serialreceived
+050.1   doecho
+050.2   overflow
+050.3   scrollnow
+051-06E ackdata
+06F     vfd_output.vfd_gate
+070     scrollcounter
+071     scrollptr
+072-074 keystate
+075-076 @sprintf_string
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+07F     @INTERRUPT_AREA
+0A0-0B5 vfd_bitbuffer
+0FF     @INTERRUPT_AREA
+110-16E config
+16F     main.command
+17F     @INTERRUPT_AREA
+190     main.subcommand
+191     command_ack.error
+191-192 read_eeprom_block.address
+191-192 atoi.s
+191     checkrange.val
+191-192 write_eeprom_block.address
+191     read_config.@SCRATCH
+191     display_current_buffer.@SCRATCH
+191     main.@SCRATCH
+192     checkrange.maxval
+192     command_ack.@SCRATCH
+192     read_config.@SCRATCH
+192     display_current_buffer.@SCRATCH
+192     main.@SCRATCH
+193     read_eeprom_block.size
+193-194 strlen.s
+193     write_eeprom_block.size
+193-194 vfd_pushstring.str
+193-194 strncpy.s1
+193     @PRINTF_U_566.P1
+193     atoi.result
+193     command_ack.@SCRATCH
+193     display_current_buffer.@SCRATCH
+193     checkrange.@SCRATCH
+193     main.@SCRATCH
+194-195 read_eeprom_block.ptr
+194     @PRINTF_U_566.P1
+194-195 write_eeprom_block.ptr
+194     vfd_scroll.right
+194     atoi.sign
+194     checkrange.@SCRATCH
+194     main.@SCRATCH
+195     vfd_pushstring.i
+195-196 strncpy.s2
+195     atoi.base
+195     @DIV88.P1
+195     @SPRINTF.P2
+195     vfd_scroll.nextchar
+195-196 strlen.sc
+196.0   vfd_pushstring.end
+196     write_eeprom_block.i
+196     read_eeprom_block.i
+196     vfd_scroll.i
+196     atoi.index
+196     @DIV88.P1
+197     strncpy.n
+197     atoi.c
+197     strlen.@SCRATCH
+197     write_eeprom_block.@SCRATCH
+197     read_eeprom_block.@SCRATCH
+197     vfd_pushstring.@SCRATCH
+197     vfd_scroll.@SCRATCH
+197     @DIV88.@SCRATCH
+198-199 strncpy.s
+198     @MUL88.P1
+198     atoi.@SCRATCH
+198     write_eeprom_block.@SCRATCH
+198     read_eeprom_block.@SCRATCH
+198     vfd_pushstring.@SCRATCH
+198     vfd_scroll.@SCRATCH
+199     @MUL88.P1
+199     atoi.@SCRATCH
+199     write_eeprom_block.@SCRATCH
+199     read_eeprom_block.@SCRATCH
+199     vfd_pushstring.@SCRATCH
+199     vfd_scroll.@SCRATCH
+19A     strncpy.@SCRATCH
+19A     read_eeprom_block.@SCRATCH
+19A     vfd_pushstring.@SCRATCH
+19A     vfd_scroll.@SCRATCH
+19B     encode_ascii.code
+19B     strncpy.@SCRATCH
+19B     vfd_scroll.@SCRATCH
+19C     strncpy.@SCRATCH
+19D     serial_isr.c
+19E     serial_isr.@SCRATCH
+19F     serial_isr.@SCRATCH
+1A0     vfd_output.i
+1A1-1A2 vfd_output.buf
+1A3     vfd_output.@SCRATCH
+1A4     vfd_output.@SCRATCH
+1A5     vfd_shift_in.parm
+1FF     @INTERRUPT_AREA
+27F     @INTERRUPT_AREA
+2FF     @INTERRUPT_AREA
+37F     @INTERRUPT_AREA
+3FF     @INTERRUPT_AREA
+
+00C2  @GETCH_BIU_1
+05A6  strncpy
+02BD  strlen
+0294  @MUL88
+05F0  atoi
+00D0  serial_isr
+04E5  command_ack
+019F  write_eeprom_block
+01EC  read_eeprom_block
+01E1  read_config
+0045  @const11241
+0052  @const11246
+0073  @const11251
+04C0  write_config
+02E1  encode_ascii
+03D0  @goto11311
+0413  vfd_pushstring
+06D5  vfd_scroll
+0118  vfd_shift_in
+0186  vfd_strobe
+0129  vfd_output
+0129  RTCC_ISR
+0194  TIMER1_ISR
+0281  output_leds
+0461  display_current_buffer
+04CF  checkrange
+0800  main
+0085  @const11428
+008F  @const11437
+0099  @const11446
+0533  @SPRINTF
+0544  @DIV88
+055D  @PRINTF_U_566
+00A3  @const11609
+0800  @cinit
+
+Project Files:
+    C:\LokaleDaten\picprojects\VFD Multiplex\main.c
+    C:\PROGRA~1\PICC\devices\16F877.h
+    C:\PROGRA~1\PICC\drivers\string.h
+    C:\PROGRA~1\PICC\drivers\stddef.h
+    C:\PROGRA~1\PICC\drivers\ctype.h
+    C:\PROGRA~1\PICC\drivers\stdlib.h
+
+Compiler Settings:
+    Processor:      PIC16F877
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: 1,8,16
+
+Output Files:
+    Diagnostics: C:\LokaleDaten\picprojects\VFD Multiplex\main.$$$
+    Errors:      C:\LokaleDaten\picprojects\VFD Multiplex\main.err
+    INHX8:       main.HEX
+    Symbols:     main.SYM
+    List:        main.LST
+    Debug/COFF:  main.cof
+    Project:     main.PJT
+    Call Tree:   C:\LokaleDaten\picprojects\VFD Multiplex\main.tre

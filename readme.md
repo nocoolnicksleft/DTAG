@@ -3,7 +3,9 @@
 
 Device using a recycled 14-segment VFD-Display to show messages received via USB.
 
-The name is an acronym of DickTierAnzeigeGerät, a german non-word describing the fact that the name of our overweight cat was the first thing successfully displayed. No, you do not need to remind that.
+The name is an acronym of DickTierAnzeigeGerät, a german non-word describing the fact that the name of our overweight cat was the first thing successfully displayed. No, you do not need to remember that.
+
+It has a FT2232L USB chip, serial EEPROM, ICSP connector. 
 
 ![DTAG](Images/500_DTAG-1.JPG)
 
